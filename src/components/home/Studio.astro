@@ -1,0 +1,99 @@
+---
+import Strip, { type StripItem } from './Strip.astro';
+import SplitHeading from './SplitHeading.astro';
+import Spotlight from './Spotlight.astro';
+import studio1 from '../../assets/home/studio/studio-1.jpg';
+import studio2 from '../../assets/home/studio/studio-2.jpg';
+import studio3 from '../../assets/home/studio/studio-3.jpg';
+import studio4 from '../../assets/home/studio/studio-4.jpg';
+import studio5 from '../../assets/home/studio/studio-5.jpg';
+
+const items: StripItem[] = [
+  { image: studio1, alt: 'Arte Algo studio in Granada, Spain — view 1', w: 300, h: 440, mt: 60 },
+  { image: studio2, alt: 'Arte Algo studio in Granada, Spain — view 2', w: 270, h: 400, mt: 0 },
+  { image: studio3, alt: 'Arte Algo studio in Granada, Spain — view 3', w: 320, h: 470, mt: 90 },
+  { image: studio4, alt: 'Arte Algo studio in Granada, Spain — view 4', w: 260, h: 380, mt: 20 },
+  { image: studio5, alt: 'Arte Algo studio in Granada, Spain — view 5', w: 300, h: 430, mt: 50 },
+];
+const word = 'Granada · Spain · ';
+---
+
+<section id="studio" class="studio" aria-labelledby="studio-title" data-studio>
+  <Spotlight size={820} strength={0.2} />
+
+  <div class="bgword" aria-hidden="true">
+    <span data-bgword>{word.repeat(4)}</span>
+  </div>
+
+  <div class="head">
+    <div class="title" data-reveal>
+      <p class="eyebrow">04 — Granada, Spain</p>
+      <SplitHeading id="studio-title" class="h2" lines={['Our', 'Studio']} />
+    </div>
+    <div class="body" data-reveal>
+      <p class="lead">
+        Our creation and training space in Granada, Spain — where new pieces are built, rehearsed and shared with the
+        artists we work with.
+      </p>
+      <a href="/#contact" class="btn btn--outline">Discover the Studio</a>
+    </div>
+  </div>
+
+  <Strip
+    items={items}
+    label="Studio photos — drag or swipe to browse"
+    duration={38}
+    mobileScale={0.6}
+    framed
+    numbered
+    progress
+    tilt
+  />
+  <a href="/#contact" class="btn btn--outline btn-mobile">Discover the Studio</a>
+</section>
+
+<style>
+  .studio {
+    position: relative;
+    padding: var(--section-y) 0 160px;
+    background: radial-gradient(45% 55% at 75% 30%, rgb(var(--orange-rgb) / 0.22), transparent 70%), var(--ink);
+  }
+
+  .bgword {
+    position: absolute; left: 0; right: 0; top: clamp(60px, 8vw, 110px);
+    overflow: hidden; pointer-events: none; user-select: none;
+  }
+  .bgword span {
+    display: inline-block; white-space: nowrap;
+    font: 700 clamp(120px, 17vw, 260px)/0.9 var(--font-display); text-transform: uppercase;
+    color: transparent;
+    -webkit-text-stroke: 1px rgb(var(--amber-rgb) / 0.16);
+    will-change: transform;
+  }
+
+  .head {
+    position: relative;
+    display: grid; grid-template-columns: 5fr 7fr; gap: clamp(40px, 5.5vw, 80px); align-items: end;
+    padding: 0 var(--gutter) 0 min(36vw, 520px);
+    margin-bottom: 80px;
+  }
+  .title, .body { display: flex; flex-direction: column; gap: 24px; }
+  .body { gap: 28px; padding-bottom: 8px; }
+  .btn-mobile { display: none; }
+
+  @media (max-width: 1080px) {
+    .head { grid-template-columns: 1fr; gap: 22px; }
+  }
+  @media (max-width: 760px) {
+    .studio {
+      padding: 150px 0 110px;
+      background: radial-gradient(80% 40% at 80% 20%, rgb(var(--orange-rgb) / 0.22), transparent 70%), var(--ink);
+    }
+    .bgword { top: 70px; }
+    .head { padding: 0 24px 0 max(140px, 36vw); margin-bottom: 40px; }
+    .title { gap: 22px; }
+    .body { margin-left: calc(24px - max(140px, 36vw)); padding-bottom: 0; }
+    .body .btn { display: none; }
+    .btn-mobile { display: flex; width: auto; margin: 36px 24px 0; }
+  }
+</style>

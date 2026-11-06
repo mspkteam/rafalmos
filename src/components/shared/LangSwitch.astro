@@ -1,0 +1,20 @@
+---
+interface Props {
+  current?: 'es' | 'en';
+}
+
+// Spanish version not built yet — ES is shown but inactive until translations exist.
+const { current = 'en' } = Astro.props;
+---
+
+<div class="lang" aria-label="Language">
+  <span class:list={[{ 'is-current': current === 'es' }]} lang="es" aria-current={current === 'es' ? 'true' : undefined}>ES</span>
+  <span aria-hidden="true">/</span>
+  <span class:list={[{ 'is-current': current === 'en' }]} lang="en" aria-current={current === 'en' ? 'true' : undefined}>EN</span>
+</div>
+
+<style>
+  .lang { display: flex; gap: 8px; }
+  .lang > span[aria-hidden] { opacity: 0.5; }
+  .is-current { color: var(--amber); }
+</style>

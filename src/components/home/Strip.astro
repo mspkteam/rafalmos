@@ -1,0 +1,159 @@
+---
+import { Image, getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+export interface StripItem {
+  image: ImageMetadata;
+  alt: string;
+  /** Frame size at desktop scale (px). */
+  w: number;
+  h: number;
+  /** Top offset for the staggered layout (px). */
+  mt?: number;
+  caption?: string;
+}
+
+interface Props {
+  items: StripItem[];
+  label: string;
+  /** Seconds for one full pass (ping-pong). */
+  duration: number;
+  /** Frame scale on phones. */
+  mobileScale?: number;
+  /** Open items in a lightbox on click. */
+  lightbox?: boolean;
+  align?: 'start' | 'center';
+  framed?: boolean;
+  /** Show 01, 02… on each frame. */
+  numbered?: boolean;
+  /** Show a progress line under the strip. */
+  progress?: boolean;
+  /** Label shown in the custom cursor over the strip. */
+  cursor?: string;
+  /** 3D tilt toward the mouse on hover. */
+  tilt?: boolean;
+}
+
+const {
+  items,
+  label,
+  duration,
+  mobileScale = 0.55,
+  lightbox = false,
+  align = 'start',
+  framed = false,
+  numbered = false,
+  progress = false,
+  cursor = 'Drag',
+  tilt = false,
+} = Astro.props;
+const pad = (n: number) => String(n).padStart(2, '0');
+
+const full = lightbox
+  ? await Promise.all(items.map((item) => getImage({ src: item.image, width: Math.min(1600, item.image.width), format: 'webp' })))
+  : [];
+---
+
+<div class="strip-wrap" style={`--s-mobile: ${mobileScale}`}>
+<div
+  class:list={['strip', `strip--${align}`, { 'strip--framed': framed }]}
+  data-strip
+  data-duration={duration}
+  data-cursor={cursor}
+  role="region"
+  aria-label={label}
+  tabindex="0"
+>
+  <ul class="track" data-strip-track>
+    {items.map((item, i) => (
+      <li class="frame" style={`--w: ${item.w}; --h: ${item.h}; --mt: ${item.mt ?? 0}`} data-tilt={tilt ? '' : undefined} data-frame>
+        {lightbox ? (
+          <button type="button" class="open" data-lightbox-src={full[i]?.src} data-lightbox-caption={item.caption ?? item.alt}>
+            <Image src={item.image} alt={item.alt} widths={[Math.round(item.w * 0.55), item.w, item.w * 2]} sizes={`(max-width: 760px) ${Math.round(item.w * mobileScale)}px, ${item.w}px`} draggable="false" />
+            <span class="visually-hidden">Open larger view</span>
+          </button>
+        ) : (
+          <div class="media" data-frame-media>
+            <Image src={item.image} alt={item.alt} widths={[Math.round(item.w * 0.55), item.w, item.w * 2]} sizes={`(max-width: 760px) ${Math.round(item.w * mobileScale)}px, ${item.w}px`} draggable="false" />
+          </div>
+        )}
+        {numbered && <span class="num" aria-hidden="true">{pad(i + 1)}<span>/{pad(items.length)}</span></span>}
+      </li>
+    ))}
+  </ul>
+</div>
+{progress && (
+  <div class="progress" aria-hidden="true"><span data-strip-progress></span></div>
+)}
+</div>
+
+<style>
+  .strip-wrap { position: relative; }
+  .strip {
+    --s: 1;
+    overflow-x: auto; overflow-y: hidden;
+    scrollbar-width: none;
+    padding-bottom: 20px;
+    cursor: grab;
+    -webkit-overflow-scrolling: touch;
+  }
+  .strip::-webkit-scrollbar { display: none; }
+  .strip.is-dragging { cursor: grabbing; user-select: none; }
+  .strip:focus-visible { outline-offset: -2px; }
+
+  .track {
+    display: flex; gap: calc(28px * var(--s));
+    width: max-content; margin: 0; list-style: none;
+    padding: calc(12px * var(--s)) var(--gutter);
+  }
+  .strip--start .track { align-items: flex-start; }
+  .strip--center .track { align-items: center; gap: calc(20px * var(--s)); }
+
+  .frame {
+    position: relative; flex: none;
+    width: calc(var(--w) * var(--s) * 1px);
+    height: calc(var(--h) * var(--s) * 1px);
+    margin-top: calc(var(--mt) * var(--s) * 1px);
+    box-shadow: 0 30px 70px rgb(0 0 0 / 0.6);
+    overflow: hidden;
+  }
+  .strip--framed .frame { overflow: visible; outline: 1px solid rgb(var(--amber-rgb) / 0.2); outline-offset: 10px; }
+  .frame img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+  .frame[data-tilt] { transform-style: preserve-3d; }
+  .media { width: 100%; height: 100%; overflow: hidden; }
+  .media img { transform-origin: 50% 60%; }
+
+  .num {
+    position: absolute; left: 14px; bottom: 12px;
+    font: 700 22px/1 var(--font-display); letter-spacing: 0.04em;
+    color: var(--cream); text-shadow: 0 2px 12px rgb(0 0 0 / 0.7);
+    transform: translateZ(30px);
+  }
+  .num span { font-size: 13px; color: var(--amber); margin-left: 2px; }
+
+  .progress {
+    position: relative; height: 1px; margin: 28px var(--gutter) 0;
+    background: rgb(var(--cream-rgb) / 0.14);
+  }
+  .progress span {
+    position: absolute; inset: 0; transform-origin: 0 50%; transform: scaleX(0);
+    background: linear-gradient(90deg, var(--orange), var(--amber));
+  }
+
+  .open {
+    display: block; width: 100%; height: 100%; padding: 0; border: 0; background: none; cursor: inherit;
+  }
+  .open img { transition: filter 0.3s ease, transform 0.6s var(--ease-out); filter: brightness(0.9); }
+  .open:hover img, .open:focus-visible img { filter: brightness(1.08); transform: scale(1.03); }
+  .frame:has(.open) { overflow: hidden; }
+
+  @media (max-width: 760px) {
+    .strip-wrap { --s: var(--s-mobile); }
+    .strip { --s: var(--s-mobile); }
+    .track { padding-inline: 24px; }
+    .strip--framed .frame { outline: 0; }
+    .progress { margin-inline: 24px; margin-top: 16px; }
+    .num { font-size: 16px; left: 10px; bottom: 8px; }
+    .num span { font-size: 10px; }
+  }
+</style>

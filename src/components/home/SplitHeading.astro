@@ -1,0 +1,18 @@
+---
+interface Props {
+  /** One string per visual line. */
+  lines: string[];
+  id?: string;
+  class?: string;
+}
+
+const { lines, id, class: className } = Astro.props;
+---
+
+<h2 id={id} class={className} aria-label={lines.join(' ')} data-split>
+  {lines.map((line) => (
+    <span class="line" aria-hidden="true">
+      {Array.from(line).map((char) => <span class="char">{char === ' ' ? ' ' : char}</span>)}
+    </span>
+  ))}
+</h2>

@@ -1,0 +1,134 @@
+---
+import { site } from '../../data/site';
+
+interface Path {
+  kicker: string;
+  title: string;
+  text: string;
+  textShort: string;
+  action: string;
+  href: string;
+}
+
+const paths: Path[] = [
+  {
+    kicker: 'Hire us',
+    title: 'Book a show',
+    text: 'Productions, acts and bespoke creations for festivals, theatres and events — in Spain and abroad.',
+    textShort: 'Productions, acts and bespoke creations — in Spain and abroad.',
+    action: 'Make a booking enquiry',
+    href: `mailto:${site.email}?subject=${encodeURIComponent('Booking enquiry')}`,
+  },
+  {
+    kicker: 'Work with us',
+    title: 'Casting',
+    text: 'Artists and technicians who want to create, train or tour with Arte Algo.',
+    textShort: 'Artists and technicians who want to create, train or tour with us.',
+    action: 'Send your profile',
+    href: `mailto:${site.email}?subject=${encodeURIComponent('Casting')}`,
+  },
+];
+---
+
+<section id="contact" class="cta" aria-labelledby="cta-title">
+  <div class="stripes stripes--l" aria-hidden="true"></div>
+  <div class="stripes stripes--r" aria-hidden="true"></div>
+  <div class="glow glow--spot" style="--breathe: 10s"><span></span></div>
+
+  <div class="head" data-reveal>
+    <p class="eyebrow" style="--i: 0">06 — Contact</p>
+    <h2 id="cta-title" style="--i: 1">Let's work<br />together</h2>
+  </div>
+
+  <div class="paths" data-reveal>
+    {paths.map((path, i) => (
+      <a href={path.href} class="path" style={`--i: ${i}`} data-glow-card>
+        <span class="kicker">{path.kicker}</span>
+        <span class="title">{path.title}<span class="arrow-sm" aria-hidden="true"> →</span></span>
+        <span class="text"><span class="long">{path.text}</span><span class="short">{path.textShort}</span></span>
+        <span class="action">{path.action} <span class="arrow" aria-hidden="true">→</span></span>
+      </a>
+    ))}
+  </div>
+
+  <div class="final">
+    <a href={`mailto:${site.email}`} class="btn btn--light">Contact us</a>
+  </div>
+</section>
+
+<style>
+  .cta {
+    position: relative; overflow: hidden;
+    padding: 180px var(--gutter) 200px;
+    background:
+      radial-gradient(30% 40% at 50% 0%, rgb(var(--amber-rgb) / 0.14), transparent 70%),
+      var(--ember-1);
+  }
+  .glow--spot { left: 0; right: 0; bottom: -35%; height: 100%; }
+  .glow--spot span { border-radius: 50%; background: radial-gradient(50% 70% at 50% 100%, rgb(var(--orange-rgb) / 0.6), transparent 70%); }
+
+  .stripes {
+    position: absolute; top: 0; bottom: 0; width: 96px; opacity: 0.14;
+    background: repeating-linear-gradient(90deg, var(--cream) 0 8px, transparent 8px 16px);
+    animation: aa-stripe 20s linear infinite;
+  }
+  .stripes--l { left: 0; }
+  .stripes--r { right: 0; animation-direction: reverse; }
+
+  .head { position: relative; display: flex; flex-direction: column; align-items: center; gap: 28px; text-align: center; }
+  h2 { font-size: var(--fs-cta); line-height: 0.88; }
+
+  .paths {
+    position: relative; margin: 80px auto 0; max-width: 1040px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 28px;
+  }
+  .path {
+    --mx: 50%; --my: 50%;
+    position: relative; overflow: hidden;
+    display: flex; flex-direction: column; gap: 18px;
+    padding: 44px;
+    background: var(--ink);
+    box-shadow: 0 30px 70px rgb(0 0 0 / 0.55), 0 0 0 1px rgb(var(--amber-rgb) / 0.25);
+    transition: box-shadow 0.3s ease;
+  }
+  .path::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(320px circle at var(--mx) var(--my), rgb(var(--orange-rgb) / 0.22), transparent 70%);
+    opacity: 0; transition: opacity 0.3s ease;
+  }
+  .path:hover::before, .path:focus-visible::before { opacity: 1; }
+  .path:hover { color: var(--cream); box-shadow: 0 30px 70px rgb(0 0 0 / 0.55), 0 0 0 1px rgb(var(--amber-rgb) / 0.55); }
+  .path > span { position: relative; }
+
+  .kicker { font: 600 12px/1 var(--font-body); letter-spacing: 0.24em; text-transform: uppercase; color: var(--amber); }
+  .title { font: 700 44px/1 var(--font-display); text-transform: uppercase; }
+  .text { font: 400 16px/1.6 var(--font-body); color: var(--text-soft); }
+  .action { padding-top: 10px; font: 600 13px/1 var(--font-body); letter-spacing: 0.22em; text-transform: uppercase; }
+  .arrow { display: inline-block; transition: transform 0.3s var(--ease-out); }
+  .path:hover .arrow { transform: translateX(6px); }
+  .arrow-sm, .short { display: none; }
+
+  .final { position: relative; display: flex; justify-content: center; margin-top: 56px; }
+
+  @media (max-width: 860px) {
+    .paths { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 760px) {
+    .cta {
+      padding: 110px 24px 120px;
+      background: var(--ember-1);
+    }
+    .stripes { width: 14px; opacity: 0.16; background: repeating-linear-gradient(90deg, var(--cream) 0 4px, transparent 4px 8px); animation: none; }
+    .head { gap: 16px; }
+    h2 { font-size: 64px; }
+    .paths { margin-top: 36px; gap: 16px; }
+    .path { padding: 26px; gap: 10px; }
+    .kicker { font-size: 11px; letter-spacing: 0.22em; }
+    .title { font-size: 32px; }
+    .text { font-size: 15px; line-height: 1.55; }
+    .long, .action { display: none; }
+    .arrow-sm, .short { display: inline; }
+    .final { margin-top: 32px; }
+    .final .btn { width: 100%; height: 56px; font-size: 13px; }
+  }
+</style>

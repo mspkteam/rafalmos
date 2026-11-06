@@ -1,0 +1,109 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  name: string;
+  role: string;
+  bio: string;
+  cvHref: string;
+  /** Approved portrait — pending from client; a placeholder frame shows until set. */
+  photo?: ImageMetadata;
+  /** Second card sits lower (desktop). */
+  offset?: boolean;
+  style?: string;
+}
+
+const { name, role, bio, cvHref, photo, offset = false, style } = Astro.props;
+const initials = name.split(' ').map((part) => part[0]).join('');
+---
+
+<div class:list={['slot', { 'slot--offset': offset }]} style={style}>
+<article class="card" data-tilt data-tilt-max="7" data-tilt-lift="8">
+  <div class="photo">
+    {photo ? (
+      <Image src={photo} alt={`Portrait of ${name}`} widths={[240, 400, 616, 924]} sizes="(max-width: 760px) 45vw, 308px" />
+    ) : (
+      <div class="placeholder" role="img" aria-label={`Portrait of ${name} coming soon`}>
+        <span>{initials}</span>
+      </div>
+    )}
+  </div>
+  <div class="body">
+    <p class="role">{role}</p>
+    <h3>{name}</h3>
+    <p class="bio">{bio}</p>
+    <a href={cvHref} class="cv"><span class="long">View selected&nbsp;</span>CV →</a>
+  </div>
+</article>
+</div>
+
+<style>
+  .slot { width: 340px; min-width: 0; }
+  .slot--offset { margin-top: 64px; }
+  .card {
+    background: var(--ink-card);
+    padding: 16px 16px 28px;
+    display: flex; flex-direction: column; gap: 20px;
+    box-shadow: var(--shadow-card);
+    position: relative;
+    transition: box-shadow 0.4s ease;
+  }
+  /* glare follows the mouse (--gx/--gy set by motion.ts) */
+  .card::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(420px circle at var(--gx, 50%) var(--gy, 0%), rgb(var(--amber-rgb) / 0.16), transparent 60%);
+    opacity: 0; transition: opacity 0.35s ease;
+  }
+  .card:hover::after { opacity: 1; }
+  .card:hover {
+    box-shadow: 0 36px 80px rgb(0 0 0 / 0.65), 0 0 0 1px rgb(var(--amber-rgb) / 0.5), 0 0 60px rgb(var(--orange-rgb) / 0.25);
+  }
+
+  .photo {
+    height: 400px; overflow: hidden;
+    background:
+      radial-gradient(70% 60% at 50% 35%, rgb(var(--orange-rgb) / 0.35), transparent 70%),
+      linear-gradient(180deg, var(--ember-4), var(--ink));
+  }
+  .photo img {
+    width: 100%; height: 100%; object-fit: cover; object-position: 50% 0;
+    filter: drop-shadow(0 20px 30px rgb(0 0 0 / 0.5));
+    transform-origin: 50% 20%;
+    transition: transform 0.6s var(--ease-out);
+  }
+  .card:hover .photo img { transform: scale(1.04); }
+  .placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .placeholder span {
+    font: 700 96px/1 var(--font-display); letter-spacing: 0.04em;
+    color: rgb(var(--cream-rgb) / 0.18);
+  }
+
+  .body { display: flex; flex-direction: column; gap: 10px; padding: 0 6px; }
+  .role {
+    font: 600 12px/1.35 var(--font-body); letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--amber);
+  }
+  h3 { font-size: 34px; line-height: 1; }
+  .bio { font: 400 15px/1.6 var(--font-body); color: var(--text-soft); }
+  .cv {
+    padding-top: 8px; min-height: 32px;
+    font: 600 12px/1 var(--font-body); letter-spacing: 0.22em; text-transform: uppercase;
+  }
+
+  @media (max-width: 760px) {
+    .slot { width: auto; }
+    .slot--offset { margin-top: 0; }
+    .card { height: 100%; padding: 8px 8px 16px; gap: 12px; }
+    .photo { height: 200px; }
+    .placeholder span { font-size: 56px; }
+    .body { gap: 6px; padding: 0 4px; order: 0; }
+    h3 { font-size: 22px; order: -1; }
+    .role { font-size: 11px; font-weight: 500; letter-spacing: 0.12em; }
+    .bio, .long { display: none; }
+    .cv { font-size: 11px; letter-spacing: 0.18em; }
+  }
+</style>

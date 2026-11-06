@@ -1,0 +1,22 @@
+# AI tool personal files (project memory in .ai/memory/ IS committed so the team shares it)
+.ai/memory/NOTES.local.md
+.claude/settings.local.json
+CLAUDE.local.md
+
+# Secrets (merge with the .gitignore your Astro/Sanity/EmDash starter created)
+.env
+.env.*
+!.env.example
+.dev.vars
+
+# Astro
+node_modules/
+dist/
+.astro/
+
+# Raw client media (large originals; optimised copies live in src/assets and public/video)
+images/
+*.zip
+
+# Vercel
+.vercel/

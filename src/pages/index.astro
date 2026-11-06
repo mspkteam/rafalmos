@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/home/Hero.astro';
+import Vision from '../components/home/Vision.astro';
+import Company from '../components/home/Company.astro';
+import Founders from '../components/home/Founders.astro';
+import Studio from '../components/home/Studio.astro';
+import Media from '../components/home/Media.astro';
+import WorkTogether from '../components/home/WorkTogether.astro';
+import { site } from '../data/site';
+---
+
+<BaseLayout title="Arte Algo — Contemporary circus from Granada, Spain" description={site.description} image="/video/teaser-poster.jpg">
+  <Hero />
+  <Vision />
+  <Company />
+  <Founders />
+  <Studio />
+  <Media />
+  <WorkTogether />
+</BaseLayout>

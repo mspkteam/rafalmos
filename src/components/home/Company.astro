@@ -1,0 +1,74 @@
+---
+import ParallaxPhoto from './ParallaxPhoto.astro';
+import company from '../../assets/home/company.png';
+
+const partners = ['Cirque du Soleil', 'Friedrichstadt-Palast', 'Cirque Éloize', 'The 7 Fingers', 'Circus Knie'];
+---
+
+<section class="company" aria-labelledby="company-title">
+  <div class="stripes" aria-hidden="true"></div>
+
+  <div class="figure">
+    <div class="block" data-parallax="-40" aria-hidden="true"></div>
+    <ParallaxPhoto
+      image={company}
+      alt="Arte Algo performers flying above a transparent stage structure"
+      sizes="(max-width: 960px) calc(100vw - 68px), 460px"
+    />
+  </div>
+
+  <div class="copy" data-reveal>
+    <p class="eyebrow" style="--i: 0">02 — The Company</p>
+    <h2 id="company-title" class="h2" style="--i: 1">Built<br />to Create</h2>
+    <p class="lead" style="--i: 2">
+      Over the years, we have performed and created around the world, collaborating with internationally recognised
+      companies and productions including Cirque du Soleil, Friedrichstadt-Palast, Cirque Éloize, The 7 Fingers and
+      Circus Knie.
+    </p>
+    <ul class="partners" style="--i: 3" aria-label="Selected collaborations">
+      {partners.map((name) => <li>{name}</li>)}
+    </ul>
+    <a href="/#founders" class="line-link" style="--i: 4">About us</a>
+  </div>
+</section>
+
+<style>
+  .company {
+    position: relative;
+    padding: calc(var(--section-y) + 20px) var(--gutter) calc(var(--section-y) + 40px);
+    display: grid; grid-template-columns: 1fr 1fr; gap: clamp(48px, 6.7vw, 96px); align-items: center;
+    background: linear-gradient(180deg, var(--ink) 0%, var(--ember-2) 30%, var(--ember-2) 75%, var(--ember-3) 100%);
+  }
+  .stripes {
+    position: absolute; right: 0; top: 0; bottom: 0; width: 120px; opacity: 0.09;
+    background: repeating-linear-gradient(90deg, var(--cream) 0 10px, transparent 10px 20px);
+    animation: aa-stripe 18s linear infinite;
+  }
+
+  .figure { position: relative; justify-self: end; width: min(460px, 100%); }
+  .block {
+    position: absolute; left: -36px; top: 60px; bottom: -36px; width: 120px; opacity: 0.6;
+    background: repeating-linear-gradient(90deg, var(--cream) 0 6px, var(--ink) 6px 12px);
+  }
+
+  .copy { position: relative; display: flex; flex-direction: column; gap: 28px; max-width: 520px; }
+
+  .partners {
+    display: flex; flex-wrap: wrap; gap: 10px 0;
+    margin: 0; padding: 22px 0 0; list-style: none;
+    border-top: 1px solid rgb(var(--cream-rgb) / 0.16);
+    font: 600 15px/1.2 var(--font-display); letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  .partners li:not(:last-child)::after { content: '·'; color: var(--orange); margin: 0 11px; }
+
+  @media (max-width: 960px) {
+    .company { grid-template-columns: 1fr; gap: 38px; }
+    .figure { order: 2; justify-self: stretch; width: auto; margin-left: 20px; }
+    .block { left: -20px; top: 40px; bottom: -20px; width: 64px; }
+  }
+  @media (max-width: 760px) {
+    .company { padding-block: 160px 170px; }
+    .copy { gap: 22px; }
+    .stripes { width: 36px; opacity: 0.1; }
+  }
+</style>

@@ -1,0 +1,79 @@
+---
+import Floater from './Floater.astro';
+import Spotlight from './Spotlight.astro';
+import rafaJump from '../../assets/home/float-rafa-jump.png';
+---
+
+<section class="hero" aria-labelledby="hero-title" data-mouse-zone>
+  <div class="media" data-hero-media>
+    <video autoplay muted loop playsinline preload="auto" poster="/video/teaser-poster.jpg" aria-hidden="true" data-hero-video>
+      <source src="/video/teaser-sm.mp4" type="video/mp4" media="(max-width: 760px)" />
+      <source src="/video/teaser.mp4" type="video/mp4" />
+    </video>
+  </div>
+  <div class="light" data-hero-light></div>
+  <Spotlight size={900} strength={0.26} />
+
+  <div class="copy" data-reveal data-depth="-14">
+    <p class="eyebrow">Contemporary circus · Granada, Spain</p>
+    <h1 id="hero-title">
+      <span style="--i: 1">Circus</span>
+      <span style="--i: 2">People</span>
+      <span style="--i: 3">Creations</span>
+    </h1>
+  </div>
+
+  <a href="#vision" class="cue" data-scroll-cue aria-label="Scroll to content">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 4v16M5 13l7 7 7-7"></path></svg>
+  </a>
+
+  <Floater image={rafaJump} width={400} x={-60} y={-300} r={-14} class="f1" />
+</section>
+
+<style>
+  .hero { position: relative; height: max(640px, min(100svh, 900px)); }
+  .media { position: absolute; inset: 0; overflow: hidden; }
+  .media video {
+    width: 100%; height: 100%; object-fit: cover;
+    transform-origin: 50% 40%; will-change: transform;
+  }
+  .light {
+    position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(60% 55% at 78% 20%, rgb(var(--amber-rgb) / 0.35), transparent 70%),
+      radial-gradient(45% 50% at 12% 70%, rgb(var(--orange-rgb) / 0.28), transparent 70%),
+      linear-gradient(180deg, rgb(var(--ink-rgb) / 0.35) 0%, rgb(var(--ink-rgb) / 0.1) 40%, rgb(var(--ink-rgb) / 0.75) 82%, var(--ink) 100%);
+  }
+  .copy {
+    position: absolute; left: var(--gutter); bottom: clamp(130px, 20%, 180px);
+    display: flex; flex-direction: column; gap: 22px;
+  }
+  .copy .eyebrow { text-shadow: 0 1px 8px rgb(0 0 0 / 0.7); }
+  h1 {
+    font-size: var(--fs-h1); line-height: 0.9; letter-spacing: -0.01em;
+    text-shadow: 0 4px 40px rgb(0 0 0 / 0.6);
+  }
+  h1 span { display: block; }
+  :global(.js) .copy[data-reveal] h1 { opacity: 1; transform: none; }
+  :global(.js) .copy[data-reveal] h1 span { opacity: 0; transform: translateY(24px); }
+
+  .cue {
+    position: absolute; left: 50%; bottom: 44px; margin-left: -22px;
+    width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;
+    border: 1px solid rgb(var(--cream-rgb) / 0.45); border-radius: 50%;
+    animation: aa-bob 1.8s ease-in-out infinite;
+    transition: opacity 0.4s ease;
+  }
+  .cue.is-hidden { opacity: 0; pointer-events: none; }
+
+  .hero :global(.f1) { right: 120px; bottom: -330px; width: 400px; }
+
+  @media (max-width: 760px) {
+    .copy { gap: 16px; }
+    .cue { bottom: 32px; }
+    .hero :global(.f1) { right: -30px; bottom: -170px; width: 210px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :global(.js) .copy[data-reveal] h1 span { opacity: 1; transform: none; }
+  }
+</style>

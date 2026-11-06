@@ -1,0 +1,15 @@
+# Files AI tools should not index or read (saves tokens, protects secrets)
+node_modules/
+dist/
+.astro/
+.wrangler/
+.sanity/
+studio/dist/
+*.min.js
+*.map
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+.env
+.env.*
+.dev.vars

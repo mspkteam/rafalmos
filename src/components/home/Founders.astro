@@ -1,0 +1,79 @@
+---
+import FounderCard from './FounderCard.astro';
+import Spotlight from './Spotlight.astro';
+import rafa from '../../assets/home/founder-rafa.png';
+import paco from '../../assets/home/founder-paco.png';
+---
+
+<section id="founders" class="founders" aria-labelledby="founders-title">
+  <div class="glow glow--centre" data-parallax="-120" style="--breathe: 11s"><span></span></div>
+  <Spotlight size={760} strength={0.18} />
+
+  <div class="grid">
+    <div class="copy" data-reveal>
+      <p class="eyebrow" style="--i: 0">03 — People</p>
+      <h2 id="founders-title" style="--i: 1">Meet the<br />Founders</h2>
+      <p class="lead" style="--i: 2">
+        Arte Algo is led by brothers Rafa and Paco Olmos, and grows through every artist and team we create with.
+      </p>
+    </div>
+
+    <div class="cards" data-reveal>
+      <FounderCard
+        name="Rafa Olmos"
+        role="Co-founder · Aerial & teeterboard"
+        bio="Classical circus artist specialising in aerial and teeterboard acts, performing internationally since 2014."
+        cvHref="/#contact"
+        photo={rafa}
+        style="--i: 0"
+      />
+      <FounderCard
+        name="Paco Olmos"
+        role="Co-founder · Duo acrobatics"
+        bio="Classical artist in duo acrobatics and teeterboard, with a focus on presence, character and risk."
+        cvHref="/#contact"
+        photo={paco}
+        offset
+        style="--i: 1.5"
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  .founders {
+    position: relative;
+    padding: var(--section-y) var(--gutter) calc(var(--section-y) + 20px);
+    background:
+      radial-gradient(55% 70% at 30% 45%, rgb(var(--orange-rgb) / 0.55), transparent 70%),
+      radial-gradient(40% 50% at 85% 80%, rgb(var(--amber-rgb) / 0.25), transparent 70%),
+      linear-gradient(180deg, var(--ember-3) 0%, var(--ember-4) 45%, var(--ember-3) 85%, var(--ink) 100%);
+  }
+  .glow--centre { left: 12%; top: 80px; width: 800px; height: 800px; }
+  .glow--centre span { background: radial-gradient(circle, rgb(var(--amber-rgb) / 0.3), transparent 62%); }
+
+  .grid { position: relative; display: grid; grid-template-columns: 4fr 8fr; gap: clamp(40px, 5.5vw, 80px); align-items: end; }
+  .copy { display: flex; flex-direction: column; gap: 24px; padding-bottom: 12px; }
+  .copy .eyebrow { color: var(--peach); }
+  h2 { font-size: var(--fs-h2-sm); line-height: 0.92; }
+  .lead { max-width: 340px; color: var(--text-warm); font-size: 17px; }
+
+  .cards { display: flex; gap: 32px; justify-content: flex-end; }
+
+  @media (max-width: 1080px) {
+    .grid { grid-template-columns: 1fr; }
+    .cards { justify-content: flex-start; }
+  }
+  @media (max-width: 760px) {
+    .founders {
+      padding-block: 150px 170px;
+      background:
+        radial-gradient(90% 50% at 30% 40%, rgb(var(--orange-rgb) / 0.55), transparent 70%),
+        linear-gradient(180deg, var(--ember-3) 0%, var(--ember-4) 45%, var(--ember-3) 85%, var(--ink) 100%);
+    }
+    .glow--centre { width: 480px; height: 480px; left: -10%; }
+    .copy { gap: 22px; }
+    .lead { font-size: 16px; }
+    .cards { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; }
+  }
+</style>

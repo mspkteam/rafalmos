@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git branch*)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git checkout *)",
+      "Bash(npm run *)",
+      "Bash(npm install*)",
+      "Bash(npm ci)",
+      "Edit",
+      "Bash(npx astro check*)",
+      "Bash(npx astro add *)",
+      "Bash(npx sanity typegen *)",
+      "Bash(npx sanity schema extract*)",
+      "Bash(npx emdash types*)"
+    ],
+    "ask": [
+      "Bash(git push *)",
+      "Bash(npm uninstall *)",
+      "Bash(npx sanity deploy*)",
+      "Bash(npx sanity dataset *)",
+      "Bash(npx wrangler deploy*)",
+      "Bash(npx wrangler d1 *--remote*)",
+      "Bash(npx wrangler r2 *)"
+    ],
+    "deny": [
+      "Bash(rm -rf *)",
+      "Bash(git push --force*)",
+      "Bash(git push -f*)",
+      "Bash(git reset --hard*)",
+      "Read(.env)",
+      "Read(.env.*)",
+      "Read(node_modules/**)",
+      "Read(dist/**)",
+      "Read(.astro/**)",
+      "Read(**/*.min.js)",
+      "Read(**/*.map)",
+      "Read(package-lock.json)",
+      "Read(yarn.lock)",
+      "Read(pnpm-lock.yaml)",
+      "Read(.dev.vars)",
+      "Read(.wrangler/**)",
+      "Read(.sanity/**)",
+      "Read(studio/dist/**)"
+    ]
+  }
+}
