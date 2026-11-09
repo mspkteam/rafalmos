@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/shared/PageHero.astro';
+import Lightbox from '../components/shared/Lightbox.astro';
+import MediaGallery from '../components/media/MediaGallery.astro';
+import Videos from '../components/media/Videos.astro';
+import WorkTogether from '../components/home/WorkTogether.astro';
+import viewpoint from '../assets/media/arte-algo-viewpoint.jpg';
+---
+
+<BaseLayout
+  title="Media — Arte Algo"
+  description="Photos and videos of Arte Algo on stage, on screen and behind the scenes — from Cirque du Soleil and Circus Knie to Friedrichstadt-Palast and Cirque Éloize."
+>
+  <PageHero eyebrow="Media · Selected moments" lines={['Moments that', 'stay with people']} image={viewpoint} imageAlt="Rafa and Paco Olmos on a teeterboard overlooking Granada" focus="50% 60%" compact />
+  <MediaGallery />
+  <Videos />
+  <WorkTogether eyebrow="Press & bookings" />
+  <Lightbox />
+</BaseLayout>

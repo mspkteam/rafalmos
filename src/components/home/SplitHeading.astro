@@ -4,15 +4,16 @@ interface Props {
   lines: string[];
   id?: string;
   class?: string;
+  as?: 'h1' | 'h2';
 }
 
-const { lines, id, class: className } = Astro.props;
+const { lines, id, class: className, as: Tag = 'h2' } = Astro.props;
 ---
 
-<h2 id={id} class={className} aria-label={lines.join(' ')} data-split>
+<Tag id={id} class={className} aria-label={lines.join(' ')} data-split>
   {lines.map((line) => (
     <span class="line" aria-hidden="true">
       {Array.from(line).map((char) => <span class="char">{char === ' ' ? ' ' : char}</span>)}
     </span>
   ))}
-</h2>
+</Tag>

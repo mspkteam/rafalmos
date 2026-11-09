@@ -3,16 +3,23 @@ export interface NavItem {
   href: string;
 }
 
-// Home-page anchors until the dedicated About / Studio / Media / Contact pages exist.
+export const pages = {
+  home: '/',
+  about: '/about',
+  studio: '/studio',
+  media: '/media',
+  contact: '/contact',
+};
+
 export const navLeft: NavItem[] = [
-  { label: 'Home', href: '/' },
-  { label: 'About Us', href: '/#vision' },
-  { label: 'Our Studio', href: '/#studio' },
+  { label: 'Home', href: pages.home },
+  { label: 'About Us', href: pages.about },
+  { label: 'Our Studio', href: pages.studio },
 ];
 
 export const navRight: NavItem[] = [
-  { label: 'Media', href: '/#media' },
-  { label: 'Contact', href: '/#contact' },
+  { label: 'Media', href: pages.media },
+  { label: 'Contact', href: pages.contact },
 ];
 
 export const site = {
@@ -24,3 +31,6 @@ export const site = {
   // TODO(client): confirm the Instagram profile URL.
   instagram: 'https://www.instagram.com/',
 };
+
+/** Pre-filled email link for an enquiry type. */
+export const mailto = (subject: string) => `mailto:${site.email}?subject=${encodeURIComponent(subject)}`;

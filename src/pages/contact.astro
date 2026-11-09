@@ -1,0 +1,127 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/shared/PageHero.astro';
+import Spotlight from '../components/home/Spotlight.astro';
+import InstagramIcon from '../components/shared/InstagramIcon.astro';
+import { site, mailto } from '../data/site';
+
+interface Enquiry {
+  kicker: string;
+  title: string;
+  text: string;
+  subject: string;
+}
+
+// Built from the client's "Let's work together" and studio text.
+const enquiries: Enquiry[] = [
+  { kicker: 'Artists', title: 'Work with us', text: "You're an artist interested in working with us.", subject: 'Artist enquiry' },
+  { kicker: 'Companies', title: 'New productions', text: "You're a company looking to develop a new production.", subject: 'New production enquiry' },
+  { kicker: 'Events', title: 'Shows & festivals', text: "You're planning a show, festival or special event.", subject: 'Show / event enquiry' },
+  { kicker: 'Studio', title: 'Train in Granada', text: "You're passing through Granada and want to train, meet and share.", subject: 'Studio enquiry' },
+];
+const marquee = "Let's create together · ";
+---
+
+<BaseLayout title="Contact — Arte Algo" description="Get in touch with Arte Algo — artists, companies, festivals and events. Based in Granada, Spain.">
+  <PageHero eyebrow="Contact" lines={["Let's work", 'together']} compact>
+    <p>We'd love to hear your ideas and explore what we can create together.</p>
+    <p>
+      Whether you're an artist interested in working with us, a company looking to develop a new production, or someone
+      planning a show, festival or special event, we're always open to new projects and collaborations.
+    </p>
+  </PageHero>
+
+  <section class="enquiries" aria-labelledby="enquiries-title">
+    <h2 id="enquiries-title" class="visually-hidden">How can we help?</h2>
+    <ul class="cards" data-reveal>
+      {enquiries.map((e, i) => (
+        <li>
+          <a href={mailto(e.subject)} class="card" data-glow-card data-tilt data-tilt-max="5">
+            <span class="num">{String(i + 1).padStart(2, '0')}</span>
+            <span class="kicker">{e.kicker}</span>
+            <span class="title">{e.title}</span>
+            <span class="text">{e.text}</span>
+            <span class="action">Write to us <span class="arrow" aria-hidden="true">→</span></span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="direct" aria-labelledby="direct-title">
+    <Spotlight size={800} strength={0.2} />
+    <div class="marquee" aria-hidden="true"><span data-marquee>{marquee.repeat(6)}</span></div>
+    <div class="inner">
+      <div data-reveal><p class="eyebrow" id="direct-title">Or write directly</p></div>
+      <a href={`mailto:${site.email}`} class="email" data-reveal><span>{site.email}</span></a>
+      <div class="details" data-reveal>
+        <div><span class="label">Based in</span><span>{site.location}</span></div>
+        <div>
+          <span class="label">Follow</span>
+          <a href={site.instagram} target="_blank" rel="noopener" class="ig"><InstagramIcon size={18} /> Instagram</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .enquiries { padding: 40px var(--gutter) var(--section-y); background: var(--ink); }
+  .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(14px, 1.8vw, 24px); margin: 0; padding: 0; list-style: none; }
+  .card {
+    --mx: 50%; --my: 50%;
+    position: relative; overflow: hidden; height: 100%;
+    display: flex; flex-direction: column; gap: 14px;
+    padding: clamp(24px, 2.6vw, 36px);
+    min-height: 340px;
+    background: var(--ink-card);
+    box-shadow: 0 30px 70px rgb(0 0 0 / 0.5), 0 0 0 1px rgb(var(--amber-rgb) / 0.2);
+    transition: box-shadow 0.3s ease;
+  }
+  .card::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(300px circle at var(--mx) var(--my), rgb(var(--orange-rgb) / 0.22), transparent 70%);
+    opacity: 0; transition: opacity 0.3s ease;
+  }
+  .card:hover::before { opacity: 1; }
+  .card:hover { color: var(--cream); box-shadow: 0 30px 70px rgb(0 0 0 / 0.5), 0 0 0 1px rgb(var(--amber-rgb) / 0.55); }
+  .card > span { position: relative; }
+  .num { font: 700 56px/1 var(--font-display); color: transparent; -webkit-text-stroke: 1px rgb(var(--amber-rgb) / 0.5); margin-bottom: auto; }
+  .kicker { font: 600 12px/1 var(--font-body); letter-spacing: 0.24em; text-transform: uppercase; color: var(--amber); }
+  .title { font: 700 clamp(28px, 2.6vw, 38px)/1 var(--font-display); text-transform: uppercase; }
+  .text { color: var(--text-soft); line-height: 1.55; }
+  .action { padding-top: 8px; font: 600 12px/1 var(--font-body); letter-spacing: 0.22em; text-transform: uppercase; }
+  .arrow { display: inline-block; transition: transform 0.3s var(--ease-out); }
+  .card:hover .arrow { transform: translateX(6px); }
+
+  .direct {
+    position: relative; overflow: hidden;
+    padding: calc(var(--section-y) + 40px) var(--gutter) var(--section-y);
+    background: radial-gradient(50% 70% at 50% 100%, rgb(var(--orange-rgb) / 0.5), transparent 70%), var(--ember-1);
+    text-align: center;
+  }
+  .marquee { position: absolute; left: 0; right: 0; top: 40px; overflow: hidden; pointer-events: none; }
+  .marquee span {
+    display: inline-block; white-space: nowrap;
+    font: 700 clamp(64px, 9vw, 140px)/1 var(--font-display); text-transform: uppercase;
+    color: transparent; -webkit-text-stroke: 1px rgb(var(--amber-rgb) / 0.14);
+  }
+  .inner { position: relative; display: flex; flex-direction: column; align-items: center; gap: 28px; }
+  .email {
+    font: 700 clamp(34px, 7vw, 112px)/1 var(--font-display); text-transform: uppercase; letter-spacing: 0.01em;
+    word-break: break-word;
+  }
+  .email span { background: linear-gradient(90deg, var(--amber), var(--amber)) 0 100% / 0 2px no-repeat; transition: background-size 0.5s var(--ease-out); padding-bottom: 6px; }
+  .email:hover span { background-size: 100% 2px; }
+  .details { display: flex; gap: clamp(32px, 6vw, 96px); flex-wrap: wrap; justify-content: center; margin-top: 12px; }
+  .details > div { display: flex; flex-direction: column; gap: 8px; align-items: center; font-size: 1.05em; }
+  .label { font: 600 11px/1 var(--font-body); letter-spacing: 0.24em; text-transform: uppercase; color: var(--amber); }
+  .ig { display: inline-flex; align-items: center; gap: 8px; }
+
+  @media (max-width: 1080px) { .cards { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) {
+    .cards { grid-template-columns: 1fr; }
+    .card { min-height: 0; }
+    .num { font-size: 40px; margin-bottom: 8px; }
+  }
+</style>

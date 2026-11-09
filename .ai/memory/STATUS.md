@@ -1,16 +1,18 @@
-**Last updated:** 2026-11-06 by Claude
-**Phase:** home page built (Astro 7, static, no CMS yet)
+**Last updated:** 2026-11-09 by Claude
+**Phase:** all 5 pages built (Astro 7, static, no CMS yet) — not yet pushed since client Revision 03
 
 **Done recently:**
-- Home page implemented from Claude Design "ARTE ALGO Home" (revision 03) + client notes "Revision 02 — Direct Changes" (`src/pages/index.astro`, `src/components/home/*`).
-- Motion uses GSAP + ScrollTrigger (`src/scripts/motion.ts`, client approved the dependency): header solid after 80px, scroll-scrubbed floaters/parallax, reveals, drag/swipe strips, media lightbox. Respects prefers-reduced-motion (video still loops).
-- Mouse effects (desktop/fine pointer only): custom cursor (`data-cursor` = label), magnetic `.btn`/`.line-link`, `data-tilt` 3D tilt, per-section `<Spotlight>`, `data-depth` mouse parallax. Studio: outlined bg word, split-letter title (`SplitHeading`), photo wipes, numbered frames, strip progress line.
-- Founder photos = "Moño pulido…" (Rafa) and "Persona invertida…" (Paco). Client rule: never repeat an image on the page, so only 2 floaters remain (Rafa jump, Paco flip).
-- Teaser starts at 0:06 of the original: `public/video/teaser.mp4` (1080p CRF 23, 32 MB) + `teaser-sm.mp4` (mobile, 1080p CRF 28, 19 MB) + poster.
+- Home page from Claude Design "ARTE ALGO Home" (revision 03) + client revisions 02 and 03 (`src/pages/index.astro`, `src/components/home/*`).
+- 2026-11-09 inner pages in the home style: `/about`, `/studio`, `/media`, `/contact` (`src/components/{about,studio,media,shared}`). Shared: `PageHero`, `Lightbox` (prev/next, browses visible items), `VideoPlayer` (click-to-play), `SplitHeading as="h1"`.
+- Motion (`src/scripts/motion.ts`, GSAP + ScrollTrigger + Flip): reveals, split titles, floaters, parallax (`data-parallax`, `data-speed`, `data-hero-bg`), pinned horizontal timeline (`data-hscroll`, desktop ≥900px only), stacking cards (`data-stack-card`), Flip gallery filter, hover photo preview (`data-hover-reveal`), batch grid reveal (`data-batch`), page-transition curtain (`data-curtain`, CSS safety net). Mouse effects desktop/fine pointer only. All respects prefers-reduced-motion.
+- Media library: `src/data/media.ts` is generated from `images/WEBSITE/MEDIA` (titles restored from Drive filenames, category stage/tv/photoshoot). Videos in `public/video/` (113 MB total).
+- Client rule: never repeat an image on the home page. Founder photos = "Moño pulido…" (Rafa), "Persona invertida…" (Paco).
+- Scoped-style gotcha: a class passed into a child component (e.g. `SplitHeading class="title"`) needs `:global(.title)` in the parent's styles.
 
 **Next up:**
+- Client review of inner-page copy (About/Studio/Contact use their existing text + titles; placeholder-free but short).
+- Push to GitHub (→ Vercel deploy) once approved.
 - Run **kickoff** to fill AGENTS.md (CMS, hosting, domain → set `site` in astro.config.mjs).
-- About / Studio / Media / Contact pages (nav currently uses home anchors).
 
 **Blockers / waiting on client:**
-- Instagram URL (`src/data/site.ts`), final media selection + any video stills, CV links, Spanish version.
+- Instagram URL (`src/data/site.ts`), confirm media caption titles, "ZIRCUS_FLASHDAY 2026" red photo looks rotated in the source file, Spanish version, real About page copy (ClickUp not connected to this session).

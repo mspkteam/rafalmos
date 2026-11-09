@@ -1,58 +1,31 @@
 ---
-import { site } from '../../data/site';
+import { pages } from '../../data/site';
+import Spotlight from './Spotlight.astro';
 
-interface Path {
-  kicker: string;
-  title: string;
-  text: string;
-  textShort: string;
-  action: string;
-  href: string;
+interface Props {
+  eyebrow?: string;
 }
 
-const paths: Path[] = [
-  {
-    kicker: 'Hire us',
-    title: 'Book a show',
-    text: 'Productions, acts and bespoke creations for festivals, theatres and events — in Spain and abroad.',
-    textShort: 'Productions, acts and bespoke creations — in Spain and abroad.',
-    action: 'Make a booking enquiry',
-    href: `mailto:${site.email}?subject=${encodeURIComponent('Booking enquiry')}`,
-  },
-  {
-    kicker: 'Work with us',
-    title: 'Casting',
-    text: 'Artists and technicians who want to create, train or tour with Arte Algo.',
-    textShort: 'Artists and technicians who want to create, train or tour with us.',
-    action: 'Send your profile',
-    href: `mailto:${site.email}?subject=${encodeURIComponent('Casting')}`,
-  },
-];
+const { eyebrow = '06 — Contact' } = Astro.props;
 ---
 
 <section id="contact" class="cta" aria-labelledby="cta-title">
   <div class="stripes stripes--l" aria-hidden="true"></div>
   <div class="stripes stripes--r" aria-hidden="true"></div>
   <div class="glow glow--spot" style="--breathe: 10s"><span></span></div>
+  <Spotlight size={760} strength={0.2} />
 
-  <div class="head" data-reveal>
-    <p class="eyebrow" style="--i: 0">06 — Contact</p>
-    <h2 id="cta-title" style="--i: 1">Let's work<br />together</h2>
-  </div>
-
-  <div class="paths" data-reveal>
-    {paths.map((path, i) => (
-      <a href={path.href} class="path" style={`--i: ${i}`} data-glow-card>
-        <span class="kicker">{path.kicker}</span>
-        <span class="title">{path.title}<span class="arrow-sm" aria-hidden="true"> →</span></span>
-        <span class="text"><span class="long">{path.text}</span><span class="short">{path.textShort}</span></span>
-        <span class="action">{path.action} <span class="arrow" aria-hidden="true">→</span></span>
-      </a>
-    ))}
-  </div>
-
-  <div class="final">
-    <a href={`mailto:${site.email}`} class="btn btn--light">Contact us</a>
+  <div class="inner" data-reveal>
+    <p class="eyebrow">{eyebrow}</p>
+    <h2 id="cta-title">Let's work<br />together</h2>
+    <div class="text">
+      <p>We'd love to hear your ideas and explore what we can create together.</p>
+      <p>
+        Whether you're an artist interested in working with us, a company looking to develop a new production, or
+        someone planning a show, festival or special event, we're always open to new projects and collaborations.
+      </p>
+    </div>
+    <a href={pages.contact} class="btn btn--light">Get in touch</a>
   </div>
 </section>
 
@@ -75,60 +48,23 @@ const paths: Path[] = [
   .stripes--l { left: 0; }
   .stripes--r { right: 0; animation-direction: reverse; }
 
-  .head { position: relative; display: flex; flex-direction: column; align-items: center; gap: 28px; text-align: center; }
+  .inner {
+    position: relative; max-width: 760px; margin: 0 auto;
+    display: flex; flex-direction: column; align-items: center; gap: 32px; text-align: center;
+  }
   h2 { font-size: var(--fs-cta); line-height: 0.88; }
-
-  .paths {
-    position: relative; margin: 80px auto 0; max-width: 1040px;
-    display: grid; grid-template-columns: 1fr 1fr; gap: 28px;
+  .text {
+    display: flex; flex-direction: column; gap: 1em;
+    line-height: 1.7; color: var(--text);
   }
-  .path {
-    --mx: 50%; --my: 50%;
-    position: relative; overflow: hidden;
-    display: flex; flex-direction: column; gap: 18px;
-    padding: 44px;
-    background: var(--ink);
-    box-shadow: 0 30px 70px rgb(0 0 0 / 0.55), 0 0 0 1px rgb(var(--amber-rgb) / 0.25);
-    transition: box-shadow 0.3s ease;
-  }
-  .path::before {
-    content: ''; position: absolute; inset: 0; pointer-events: none;
-    background: radial-gradient(320px circle at var(--mx) var(--my), rgb(var(--orange-rgb) / 0.22), transparent 70%);
-    opacity: 0; transition: opacity 0.3s ease;
-  }
-  .path:hover::before, .path:focus-visible::before { opacity: 1; }
-  .path:hover { color: var(--cream); box-shadow: 0 30px 70px rgb(0 0 0 / 0.55), 0 0 0 1px rgb(var(--amber-rgb) / 0.55); }
-  .path > span { position: relative; }
+  .text p:first-child { color: var(--cream); font-size: 1.15em; }
+  .inner .btn { margin-top: 12px; }
 
-  .kicker { font: 600 12px/1 var(--font-body); letter-spacing: 0.24em; text-transform: uppercase; color: var(--amber); }
-  .title { font: 700 44px/1 var(--font-display); text-transform: uppercase; }
-  .text { font: 400 16px/1.6 var(--font-body); color: var(--text-soft); }
-  .action { padding-top: 10px; font: 600 13px/1 var(--font-body); letter-spacing: 0.22em; text-transform: uppercase; }
-  .arrow { display: inline-block; transition: transform 0.3s var(--ease-out); }
-  .path:hover .arrow { transform: translateX(6px); }
-  .arrow-sm, .short { display: none; }
-
-  .final { position: relative; display: flex; justify-content: center; margin-top: 56px; }
-
-  @media (max-width: 860px) {
-    .paths { grid-template-columns: 1fr; }
-  }
   @media (max-width: 760px) {
-    .cta {
-      padding: 110px 24px 120px;
-      background: var(--ember-1);
-    }
+    .cta { padding: 110px 24px 120px; }
     .stripes { width: 14px; opacity: 0.16; background: repeating-linear-gradient(90deg, var(--cream) 0 4px, transparent 4px 8px); animation: none; }
-    .head { gap: 16px; }
+    .inner { gap: 22px; }
     h2 { font-size: 64px; }
-    .paths { margin-top: 36px; gap: 16px; }
-    .path { padding: 26px; gap: 10px; }
-    .kicker { font-size: 11px; letter-spacing: 0.22em; }
-    .title { font-size: 32px; }
-    .text { font-size: 15px; line-height: 1.55; }
-    .long, .action { display: none; }
-    .arrow-sm, .short { display: inline; }
-    .final { margin-top: 32px; }
-    .final .btn { width: 100%; height: 56px; font-size: 13px; }
+    .inner .btn { width: 100%; height: 56px; font-size: 13px; }
   }
 </style>

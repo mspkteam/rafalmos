@@ -1,0 +1,54 @@
+---
+import FounderCard from '../home/FounderCard.astro';
+import SplitHeading from '../home/SplitHeading.astro';
+import Spotlight from '../home/Spotlight.astro';
+import rafa from '../../assets/home/founder-rafa.png';
+import paco from '../../assets/home/founder-paco.png';
+---
+
+<section class="founders" aria-labelledby="about-founders-title">
+  <div class="glow glow--f" data-parallax="-100" style="--breathe: 11s"><span></span></div>
+  <Spotlight size={760} strength={0.18} />
+
+  <div class="grid">
+    <div class="copy">
+      <div data-reveal><p class="eyebrow">04 — People</p></div>
+      <SplitHeading id="about-founders-title" class="h2" lines={['Meet the', 'founders']} />
+      <div data-reveal>
+        <p class="lead">
+          Arte Algo is led by brothers Rafa and Paco Olmos, and grows through every artist and team we create with.
+        </p>
+      </div>
+    </div>
+    <div class="cards" data-reveal>
+      <FounderCard name="Rafa Olmos" role="Co-Founder, Acrobat, Creator" photo={rafa} />
+      <FounderCard name="Paco Olmos" role="Co-Founder, Acrobat, Creator" photo={paco} offset />
+    </div>
+  </div>
+</section>
+
+<style>
+  .founders {
+    position: relative;
+    padding: var(--section-y) var(--gutter) calc(var(--section-y) + 20px);
+    background:
+      radial-gradient(55% 70% at 30% 45%, rgb(var(--orange-rgb) / 0.5), transparent 70%),
+      linear-gradient(180deg, var(--ember-3) 0%, var(--ember-4) 45%, var(--ember-3) 85%, var(--ink) 100%);
+  }
+  .glow--f { left: 10%; top: 80px; width: 760px; height: 760px; }
+  .glow--f span { background: radial-gradient(circle, rgb(var(--amber-rgb) / 0.28), transparent 62%); }
+  .grid { position: relative; display: grid; grid-template-columns: 4fr 8fr; gap: clamp(40px, 5.5vw, 80px); align-items: end; }
+  .copy { display: flex; flex-direction: column; gap: 24px; padding-bottom: 12px; }
+  .copy .eyebrow { color: var(--peach); }
+  .lead { max-width: 340px; color: var(--text-warm); }
+  .cards { display: flex; gap: 32px; justify-content: flex-end; }
+
+  @media (max-width: 1080px) {
+    .grid { grid-template-columns: 1fr; }
+    .cards { justify-content: flex-start; }
+  }
+  @media (max-width: 760px) {
+    .glow--f { width: 460px; height: 460px; left: -10%; }
+    .cards { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; }
+  }
+</style>

@@ -11,12 +11,21 @@ import pacoFlip from '../../assets/home/float-paco-flip.png';
   <div class="copy" data-reveal>
     <p class="eyebrow" style="--i: 0">01 — Who we are</p>
     <h2 id="vision-title" class="h2" style="--i: 1">Artistic<br />Vision</h2>
-    <p class="lead" style="--i: 2">
-      Arte Algo is a contemporary circus company from Granada, Spain, founded by Rafa and Paco Olmos. We create and
-      perform original productions, collaborate with other artists and organisations, and explore new ways of bringing
-      circus to different spaces and audiences.
-    </p>
-    <a href="/#founders" class="line-link" style="--i: 3">Our story</a>
+    <div class="text lead">
+      <p>
+        Arte Algo is a contemporary circus company from Granada, Spain, founded by brothers Rafa and Paco Olmos.
+      </p>
+      <p>
+        We are fascinated by what the human body can do, but even more by what it can communicate. A jump can be more
+        than a jump. A fall can carry fear, trust, failure or hope.
+      </p>
+      <p>
+        For us, acrobatics become meaningful when they stop being only a demonstration of skill and start telling
+        something human. We bring together circus, theatre, music and movement to create work that connects with people
+        and stays with them.
+      </p>
+    </div>
+    <a href="/about" class="line-link">Our story</a>
   </div>
 
   <div class="figure">
@@ -34,7 +43,8 @@ import pacoFlip from '../../assets/home/float-paco-flip.png';
 <style>
   .vision {
     position: relative;
-    padding: var(--section-y) var(--gutter) calc(var(--section-y) + 20px);
+    /* extra top space: the hero's flying figure lands here and must clear the photo */
+    padding: calc(var(--section-y) + 400px) var(--gutter) calc(var(--section-y) + 20px);
     display: grid; grid-template-columns: 5fr 7fr; gap: clamp(48px, 6vw, 88px); align-items: center;
     background: radial-gradient(50% 60% at 88% 55%, rgb(var(--orange-rgb) / 0.32), transparent 70%), var(--ink);
   }
@@ -42,7 +52,8 @@ import pacoFlip from '../../assets/home/float-paco-flip.png';
   .glow--left span { background: radial-gradient(circle, rgb(160 70 25 / 0.35), transparent 65%); }
 
   .copy { position: relative; display: flex; flex-direction: column; gap: 28px; }
-  .lead { max-width: 460px; }
+  .text { max-width: 480px; display: flex; flex-direction: column; gap: 1em; }
+  .text p:first-child { color: var(--cream); }
 
   .figure { position: relative; }
   .outline {
@@ -59,7 +70,7 @@ import pacoFlip from '../../assets/home/float-paco-flip.png';
   }
   @media (max-width: 760px) {
     .vision {
-      padding-block: 150px 160px;
+      padding-block: 360px 160px;
       background: radial-gradient(80% 40% at 90% 70%, rgb(var(--orange-rgb) / 0.32), transparent 70%), var(--ink);
     }
     .copy { gap: 22px; }

@@ -134,7 +134,7 @@ p { margin: 0; text-wrap: pretty; }
 .js [data-reveal] > * { opacity: 0; transform: translateY(24px); }
 
 /* split headings: each letter rises out of a clipped line */
-[data-split] .line { display: block; overflow: hidden; padding-bottom: 0.06em; margin-bottom: -0.06em; }
+[data-split] .line { display: block; overflow: hidden; padding: 0.14em 0 0.06em; margin: -0.14em 0 -0.06em; }
 [data-split] .char { display: inline-block; will-change: transform; }
 .js [data-reveal] > [data-split] { opacity: 1; transform: none; }
 .js [data-split] .char { transform: translateY(110%); }

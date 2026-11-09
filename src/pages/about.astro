@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/shared/PageHero.astro';
+import Floater from '../components/home/Floater.astro';
+import Story from '../components/about/Story.astro';
+import Timeline from '../components/about/Timeline.astro';
+import WhatWeDo from '../components/about/WhatWeDo.astro';
+import AboutFounders from '../components/about/AboutFounders.astro';
+import Collaborations from '../components/about/Collaborations.astro';
+import WorkTogether from '../components/home/WorkTogether.astro';
+import stage from '../assets/about/hero-stage.jpg';
+import versuth from '../assets/about/float-versuth.png';
+---
+
+<BaseLayout
+  title="About Us — Arte Algo"
+  description="Arte Algo is a contemporary circus company from Granada, Spain, founded by brothers Rafa and Paco Olmos. Our story, our path and the companies we have created with."
+>
+  <PageHero eyebrow="About us · Granada, Spain" lines={['A jump can be', 'more than a jump']} image={stage} focus="50% 40%">
+    <p>A fall can carry fear, trust, failure or hope. We bring together circus, theatre, music and movement to tell something human.</p>
+    <Floater slot="extra" image={versuth} width={380} x={-80} y={-200} r={12} class="hero-float" />
+  </PageHero>
+  <Story />
+  <Timeline />
+  <WhatWeDo />
+  <AboutFounders />
+  <Collaborations />
+  <WorkTogether eyebrow="Contact" />
+</BaseLayout>
+
+<style>
+  :global(.hero-float) { right: 7%; bottom: -260px; width: 380px; }
+  @media (max-width: 760px) {
+    :global(.hero-float) { right: -30px; bottom: -150px; width: 200px; }
+  }
+</style>

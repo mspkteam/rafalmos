@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import StudioHero from '../components/studio/StudioHero.astro';
+import Uses from '../components/studio/Uses.astro';
+import Gallery from '../components/studio/Gallery.astro';
+import FlashDay from '../components/studio/FlashDay.astro';
+import WorkTogether from '../components/home/WorkTogether.astro';
+---
+
+<BaseLayout
+  title="Our Studio — Arte Algo, Granada, Spain"
+  description="The Arte Algo studio in Granada, Spain: a space to train, create and connect, open to artists passing through Granada."
+>
+  <StudioHero />
+  <Uses />
+  <Gallery />
+  <FlashDay />
+  <WorkTogether eyebrow="Visit · Train · Create" />
+</BaseLayout>

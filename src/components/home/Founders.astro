@@ -1,6 +1,7 @@
 ---
 import FounderCard from './FounderCard.astro';
 import Spotlight from './Spotlight.astro';
+import { pages } from '../../data/site';
 import rafa from '../../assets/home/founder-rafa.png';
 import paco from '../../assets/home/founder-paco.png';
 ---
@@ -13,29 +14,15 @@ import paco from '../../assets/home/founder-paco.png';
     <div class="copy" data-reveal>
       <p class="eyebrow" style="--i: 0">03 — People</p>
       <h2 id="founders-title" style="--i: 1">Meet the<br />Founders</h2>
-      <p class="lead" style="--i: 2">
+      <p class="lead">
         Arte Algo is led by brothers Rafa and Paco Olmos, and grows through every artist and team we create with.
       </p>
+      <a href={pages.about} class="btn btn--outline">About us</a>
     </div>
 
     <div class="cards" data-reveal>
-      <FounderCard
-        name="Rafa Olmos"
-        role="Co-founder · Aerial & teeterboard"
-        bio="Classical circus artist specialising in aerial and teeterboard acts, performing internationally since 2014."
-        cvHref="/#contact"
-        photo={rafa}
-        style="--i: 0"
-      />
-      <FounderCard
-        name="Paco Olmos"
-        role="Co-founder · Duo acrobatics"
-        bio="Classical artist in duo acrobatics and teeterboard, with a focus on presence, character and risk."
-        cvHref="/#contact"
-        photo={paco}
-        offset
-        style="--i: 1.5"
-      />
+      <FounderCard name="Rafa Olmos" role="Co-Founder, Acrobat, Creator" photo={rafa} />
+      <FounderCard name="Paco Olmos" role="Co-Founder, Acrobat, Creator" photo={paco} offset />
     </div>
   </div>
 </section>

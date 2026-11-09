@@ -1,0 +1,85 @@
+---
+import { Image } from 'astro:assets';
+import SplitHeading from '../home/SplitHeading.astro';
+import trampwall1 from '../../assets/about/trampwall-1.jpg';
+import trampwall2 from '../../assets/about/trampwall-2.jpg';
+import actV from '../../assets/about/act-v.jpg';
+
+interface Pillar {
+  title: string;
+  text: string;
+}
+
+// Wording taken from the client's own company text.
+const pillars: Pillar[] = [
+  { title: 'Own productions', text: 'Original work, developed from our creative base in Granada, Spain.' },
+  { title: 'Artistic direction', text: 'Leading the artistic direction behind multiple projects and artistic teams.' },
+  { title: 'Creation', text: 'Bringing together circus, theatre, music and movement to create work that stays with people.' },
+  { title: 'Casting', text: 'Bringing together artists from different countries to build the right team for each project.' },
+];
+---
+
+<section class="what" aria-labelledby="what-title">
+  <div class="stripes" aria-hidden="true"></div>
+
+  <div class="collage" aria-hidden="true">
+    <div class="ph ph--a" data-speed="-0.12"><Image src={trampwall1} alt="" widths={[400, 700]} sizes="(max-width: 960px) 60vw, 380px" /></div>
+    <div class="ph ph--b" data-speed="0.18"><Image src={actV} alt="" widths={[300, 500]} sizes="(max-width: 960px) 40vw, 260px" /></div>
+    <div class="ph ph--c" data-speed="0.06"><Image src={trampwall2} alt="" widths={[400, 700]} sizes="(max-width: 960px) 60vw, 360px" /></div>
+  </div>
+
+  <div class="copy">
+    <div data-reveal><p class="eyebrow">03 — What we do</p></div>
+    <SplitHeading id="what-title" class="h2" lines={['Built', 'to create']} />
+    <ol class="pillars" data-reveal>
+      {pillars.map((p, i) => (
+        <li class="pillar">
+          <span class="num">{String(i + 1).padStart(2, '0')}</span>
+          <div>
+            <h3>{p.title}</h3>
+            <p>{p.text}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .what {
+    position: relative;
+    padding: var(--section-y) var(--gutter);
+    display: grid; grid-template-columns: 5fr 6fr; gap: clamp(48px, 7vw, 110px); align-items: center;
+    background: linear-gradient(180deg, var(--ink) 0%, var(--ember-2) 40%, var(--ember-3) 100%);
+    overflow: hidden;
+  }
+  .stripes {
+    position: absolute; left: 0; top: 0; bottom: 0; width: 110px; opacity: 0.08;
+    background: repeating-linear-gradient(90deg, var(--cream) 0 10px, transparent 10px 20px);
+    animation: aa-stripe 18s linear infinite;
+  }
+
+  .collage { position: relative; height: clamp(460px, 48vw, 640px); }
+  .ph { position: absolute; overflow: hidden; box-shadow: var(--shadow-photo); }
+  .ph img { width: 100%; height: 100%; object-fit: cover; }
+  .ph--a { left: 0; top: 0; width: 72%; aspect-ratio: 5 / 4; }
+  .ph--b { right: 0; top: 32%; width: 42%; aspect-ratio: 4 / 5; z-index: 2; outline: 1px solid rgb(var(--amber-rgb) / 0.3); outline-offset: 10px; }
+  .ph--c { left: 10%; bottom: 0; width: 56%; aspect-ratio: 3 / 2; z-index: 1; }
+
+  .copy { position: relative; display: flex; flex-direction: column; gap: 28px; }
+  .pillars { margin: 12px 0 0; padding: 0; list-style: none; border-top: 1px solid rgb(var(--cream-rgb) / 0.14); }
+  .pillar {
+    display: grid; grid-template-columns: 56px 1fr; gap: 16px; align-items: baseline;
+    padding: 22px 0; border-bottom: 1px solid rgb(var(--cream-rgb) / 0.14);
+    transition: padding-left 0.4s var(--ease-out), background-color 0.4s ease;
+  }
+  .pillar:hover { padding-left: 14px; background: linear-gradient(90deg, rgb(var(--orange-rgb) / 0.12), transparent 70%); }
+  .num { font: 700 20px/1 var(--font-display); color: var(--amber); }
+  h3 { font-size: clamp(26px, 2.6vw, 36px); line-height: 1; margin-bottom: 8px; }
+  .pillar p { color: var(--text); line-height: 1.6; max-width: 460px; }
+
+  @media (max-width: 960px) {
+    .what { grid-template-columns: 1fr; }
+    .collage { order: 2; height: clamp(360px, 90vw, 520px); }
+  }
+</style>

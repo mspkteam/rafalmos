@@ -20,15 +20,26 @@ const partners = ['Cirque du Soleil', 'Friedrichstadt-Palast', 'Cirque Éloize',
   <div class="copy" data-reveal>
     <p class="eyebrow" style="--i: 0">02 — The Company</p>
     <h2 id="company-title" class="h2" style="--i: 1">Built<br />to Create</h2>
-    <p class="lead" style="--i: 2">
-      Over the years, we have performed and created around the world, collaborating with internationally recognised
-      companies and productions including Cirque du Soleil, Friedrichstadt-Palast, Cirque Éloize, The 7 Fingers and
-      Circus Knie.
-    </p>
-    <ul class="partners" style="--i: 3" aria-label="Selected collaborations">
+    <div class="text lead">
+      <p>
+        What began in 2017 as a teeterboard duo has grown into an international creative company working across
+        different productions and artistic teams.
+      </p>
+      <p>
+        Over the years, we have performed and created around the world, collaborating with internationally recognised
+        companies and productions including Cirque du Soleil, Friedrichstadt-Palast, Cirque Éloize, The 7 Fingers and
+        Circus Knie.
+      </p>
+      <p>
+        Today, Arte Algo brings together artists from different countries, develops its own productions and leads the
+        artistic direction, creation and casting behind multiple projects. From our creative base in Granada, Spain, we
+        continue building the team, the space and the structure needed to turn ambitious ideas into real productions.
+      </p>
+    </div>
+    <ul class="partners" aria-label="Selected collaborations">
       {partners.map((name) => <li>{name}</li>)}
     </ul>
-    <a href="/#founders" class="line-link" style="--i: 4">About us</a>
+    <a href="/about" class="line-link">About us</a>
   </div>
 </section>
 
@@ -52,6 +63,7 @@ const partners = ['Cirque du Soleil', 'Friedrichstadt-Palast', 'Cirque Éloize',
   }
 
   .copy { position: relative; display: flex; flex-direction: column; gap: 28px; max-width: 520px; }
+  .text { display: flex; flex-direction: column; gap: 1em; }
 
   .partners {
     display: flex; flex-wrap: wrap; gap: 10px 0;

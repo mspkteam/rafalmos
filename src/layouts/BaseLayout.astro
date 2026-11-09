@@ -1,5 +1,7 @@
 ---
 import '../styles/global.css';
+import { Image } from 'astro:assets';
+import logo from '../assets/brand/logo-white.png';
 import SEO from '../components/shared/SEO.astro';
 import Header from '../components/shared/Header.astro';
 import Footer from '../components/shared/Footer.astro';
@@ -28,6 +30,9 @@ const { title, description, image } = Astro.props;
   </head>
   <body>
     <div class="grain" aria-hidden="true"></div>
+    <div class="curtain" aria-hidden="true" data-curtain>
+      <Image src={logo} alt="" width={120} densities={[1, 2]} loading="eager" />
+    </div>
     <Header current={Astro.url.pathname} />
     <main>
       <slot />
@@ -40,6 +45,18 @@ const { title, description, image } = Astro.props;
 </html>
 
 <style>
+  .curtain {
+    position: fixed; inset: 0; z-index: 300;
+    display: flex; align-items: center; justify-content: center;
+    background: radial-gradient(50% 50% at 50% 50%, var(--ember-4), var(--ink) 75%);
+    pointer-events: none;
+  }
+  .curtain img { width: 96px; height: auto; opacity: 0.9; }
+  :global(html:not(.js)) .curtain, .curtain[hidden] { display: none; }
+  /* safety net: if scripts fail, the curtain still gets out of the way */
+  .curtain:not(.is-live) { animation: curtain-off 0.01s linear 2.5s forwards; }
+  @keyframes curtain-off { to { visibility: hidden; } }
+
   .grain {
     position: fixed; inset: 0; z-index: 40; pointer-events: none;
     opacity: 0.22; mix-blend-mode: overlay;

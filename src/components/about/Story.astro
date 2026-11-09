@@ -1,0 +1,63 @@
+---
+import Floater from '../home/Floater.astro';
+import ParallaxPhoto from '../home/ParallaxPhoto.astro';
+import SplitHeading from '../home/SplitHeading.astro';
+import festival from '../../assets/about/latina-festival.jpg';
+import ari from '../../assets/about/float-ari.png';
+---
+
+<section class="story" aria-labelledby="story-title">
+  <div class="glow glow--story" data-parallax="120"><span></span></div>
+
+  <div class="copy">
+    <div data-reveal><p class="eyebrow">01 — Who we are</p></div>
+    <SplitHeading id="story-title" class="h2" lines={['Brothers,', 'acrobats,', 'creators']} />
+    <div class="text lead" data-reveal>
+      <p>Arte Algo is a contemporary circus company from Granada, Spain, founded by brothers Rafa and Paco Olmos.</p>
+      <p>
+        We are fascinated by what the human body can do, but even more by what it can communicate. A jump can be more
+        than a jump. A fall can carry fear, trust, failure or hope.
+      </p>
+      <p>
+        For us, acrobatics become meaningful when they stop being only a demonstration of skill and start telling
+        something human. We bring together circus, theatre, music and movement to create work that connects with people
+        and stays with them.
+      </p>
+    </div>
+  </div>
+
+  <div class="figure">
+    <div class="frame-line" data-parallax="-40" aria-hidden="true"></div>
+    <ParallaxPhoto image={festival} alt="Rafa and Paco Olmos on stage at the Festival del Circo di Latina" sizes="(max-width: 960px) calc(100vw - 48px), 520px" />
+  </div>
+
+  <Floater image={ari} width={300} x={-50} y={160} r={-18} class="f-ari" />
+</section>
+
+<style>
+  .story {
+    position: relative;
+    padding: calc(var(--section-y) + 60px) var(--gutter) calc(var(--section-y) + 40px);
+    display: grid; grid-template-columns: 6fr 5fr; gap: clamp(48px, 7vw, 110px); align-items: center;
+    background: radial-gradient(45% 55% at 85% 40%, rgb(var(--orange-rgb) / 0.26), transparent 70%), var(--ink);
+  }
+  .glow--story { left: -220px; top: 30%; width: 720px; height: 720px; }
+  .glow--story span { background: radial-gradient(circle, rgb(160 70 25 / 0.32), transparent 65%); }
+
+  .copy { position: relative; display: flex; flex-direction: column; gap: 28px; }
+  .text { display: flex; flex-direction: column; gap: 1em; max-width: 560px; }
+  .text p:first-child { color: var(--cream); font-size: 1.12em; }
+
+  .figure { position: relative; }
+  .frame-line { position: absolute; inset: 28px -28px -28px 28px; border: 1px solid rgb(var(--amber-rgb) / 0.35); }
+
+  .story :global(.f-ari) { right: 6%; bottom: -330px; width: 300px; }
+
+  @media (max-width: 960px) {
+    .story { grid-template-columns: 1fr; }
+    .frame-line { inset: 14px -14px -14px 14px; }
+  }
+  @media (max-width: 760px) {
+    .story :global(.f-ari) { right: -20px; bottom: -200px; width: 170px; }
+  }
+</style>

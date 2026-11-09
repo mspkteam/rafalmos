@@ -70,6 +70,7 @@ const full = lightbox
         {lightbox ? (
           <button type="button" class="open" data-lightbox-src={full[i]?.src} data-lightbox-caption={item.caption ?? item.alt}>
             <Image src={item.image} alt={item.alt} widths={[Math.round(item.w * 0.55), item.w, item.w * 2]} sizes={`(max-width: 760px) ${Math.round(item.w * mobileScale)}px, ${item.w}px`} draggable="false" />
+            {item.caption && <span class="cap">{item.caption}</span>}
             <span class="visually-hidden">Open larger view</span>
           </button>
         ) : (
@@ -146,6 +147,13 @@ const full = lightbox
   .open img { transition: filter 0.3s ease, transform 0.6s var(--ease-out); filter: brightness(0.9); }
   .open:hover img, .open:focus-visible img { filter: brightness(1.08); transform: scale(1.03); }
   .frame:has(.open) { overflow: hidden; }
+  .cap {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    padding: 40px 18px 16px;
+    background: linear-gradient(180deg, transparent, rgb(var(--ink-rgb) / 0.85));
+    font: 600 11px/1.4 var(--font-body); letter-spacing: 0.18em; text-transform: uppercase; text-align: left;
+    color: var(--cream);
+  }
 
   @media (max-width: 760px) {
     .strip-wrap { --s: var(--s-mobile); }
@@ -154,6 +162,7 @@ const full = lightbox
     .strip--framed .frame { outline: 0; }
     .progress { margin-inline: 24px; margin-top: 16px; }
     .num { font-size: 16px; left: 10px; bottom: 8px; }
+    .cap { padding: 28px 10px 9px; font-size: 9px; letter-spacing: 0.12em; }
     .num span { font-size: 10px; }
   }
 </style>

@@ -17,9 +17,10 @@ import rafaJump from '../../assets/home/float-rafa-jump.png';
   <div class="copy" data-reveal data-depth="-14">
     <p class="eyebrow">Contemporary circus · Granada, Spain</p>
     <h1 id="hero-title">
-      <span style="--i: 1">Circus</span>
-      <span style="--i: 2">People</span>
-      <span style="--i: 3">Creations</span>
+      <span>We speak</span>
+      <span>through acrobatics,</span>
+      <span>we connect</span>
+      <span>through <em>emotion.</em></span>
     </h1>
   </div>
 
@@ -27,7 +28,7 @@ import rafaJump from '../../assets/home/float-rafa-jump.png';
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 4v16M5 13l7 7 7-7"></path></svg>
   </a>
 
-  <Floater image={rafaJump} width={400} x={-60} y={-300} r={-14} class="f1" />
+  <Floater image={rafaJump} width={400} x={-60} y={-150} r={-14} class="f1" />
 </section>
 
 <style>
@@ -50,10 +51,11 @@ import rafaJump from '../../assets/home/float-rafa-jump.png';
   }
   .copy .eyebrow { text-shadow: 0 1px 8px rgb(0 0 0 / 0.7); }
   h1 {
-    font-size: var(--fs-h1); line-height: 0.9; letter-spacing: -0.01em;
+    font-size: clamp(2.5rem, 7vw, 6.5rem); line-height: 0.92; letter-spacing: -0.005em;
     text-shadow: 0 4px 40px rgb(0 0 0 / 0.6);
   }
   h1 span { display: block; }
+  h1 em { font-style: normal; color: var(--amber); }
   :global(.js) .copy[data-reveal] h1 { opacity: 1; transform: none; }
   :global(.js) .copy[data-reveal] h1 span { opacity: 0; transform: translateY(24px); }
 
@@ -66,12 +68,13 @@ import rafaJump from '../../assets/home/float-rafa-jump.png';
   }
   .cue.is-hidden { opacity: 0; pointer-events: none; }
 
-  .hero :global(.f1) { right: 120px; bottom: -330px; width: 400px; }
+  /* only the raised arm (elbow up) should reach into the video */
+  .hero :global(.f1) { right: 120px; bottom: -640px; width: 400px; }
 
   @media (max-width: 760px) {
     .copy { gap: 16px; }
     .cue { bottom: 32px; }
-    .hero :global(.f1) { right: -30px; bottom: -170px; width: 210px; }
+    .hero :global(.f1) { right: -30px; bottom: -305px; width: 210px; }
   }
   @media (prefers-reduced-motion: reduce) {
     :global(.js) .copy[data-reveal] h1 span { opacity: 1; transform: none; }

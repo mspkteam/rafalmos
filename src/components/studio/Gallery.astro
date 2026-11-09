@@ -1,0 +1,56 @@
+---
+import { Image } from 'astro:assets';
+import SplitHeading from '../home/SplitHeading.astro';
+import s1 from '../../assets/home/studio/studio-1.jpg';
+import s2 from '../../assets/home/studio/studio-2.jpg';
+import s3 from '../../assets/home/studio/studio-3.jpg';
+import s4 from '../../assets/home/studio/studio-4.jpg';
+import s5 from '../../assets/home/studio/studio-5.jpg';
+import door from '../../assets/studio/door.jpg';
+
+const columns = [
+  { speed: -0.08, items: [door, s2] },
+  { speed: 0.14, items: [s3, s5] },
+  { speed: -0.02, items: [s4, s1] },
+];
+---
+
+<section class="gallery" aria-labelledby="gallery-title">
+  <div class="head">
+    <div data-reveal><p class="eyebrow">02 — Inside</p></div>
+    <SplitHeading id="gallery-title" class="h2" lines={['Views of', 'the studio']} />
+  </div>
+  <div class="cols">
+    {columns.map((col) => (
+      <div class="col" data-speed={col.speed}>
+        {col.items.map((img) => (
+          <div class="ph" data-tilt data-tilt-max="4">
+            <Image src={img} alt={`Arte Algo studio in Granada, Spain`} widths={[360, 620]} sizes="(max-width: 760px) 45vw, 30vw" />
+          </div>
+        ))}
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .gallery {
+    position: relative;
+    padding: var(--section-y) var(--gutter) calc(var(--section-y) + 40px);
+    background: radial-gradient(45% 50% at 50% 50%, rgb(var(--orange-rgb) / 0.18), transparent 70%), var(--ink);
+    overflow: hidden;
+  }
+  .head { display: flex; flex-direction: column; gap: 24px; margin-bottom: 72px; text-align: center; align-items: center; }
+  .cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(16px, 2.4vw, 36px); align-items: start; }
+  .col { display: flex; flex-direction: column; gap: clamp(16px, 2.4vw, 36px); will-change: transform; }
+  .col:nth-child(2) { margin-top: 120px; }
+  .ph { overflow: hidden; aspect-ratio: 3 / 4; box-shadow: 0 30px 70px rgb(0 0 0 / 0.55); }
+  .ph img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s var(--ease-out); }
+  .ph:hover img { transform: scale(1.06); }
+
+  @media (max-width: 760px) {
+    .cols { grid-template-columns: 1fr 1fr; }
+    .col:nth-child(2) { margin-top: 60px; }
+    .col:nth-child(3) { display: none; }
+  }
+</style>

@@ -31,11 +31,18 @@ const word = 'Granada · Spain · ';
       <SplitHeading id="studio-title" class="h2" lines={['Our', 'Studio']} />
     </div>
     <div class="body" data-reveal>
-      <p class="lead">
-        Our creation and training space in Granada, Spain — where new pieces are built, rehearsed and shared with the
-        artists we work with.
-      </p>
-      <a href="/#contact" class="btn btn--outline">Discover the Studio</a>
+      <div class="text lead">
+        <p class="tagline">A space to train, create and connect.</p>
+        <p>
+          Our studio in Granada, Spain is the home of Arte Algo, a place where we develop our own work, train, experiment
+          and bring new ideas to life.
+        </p>
+        <p>
+          It is also a space open to artists passing through Granada who want to train, meet, share and become part of
+          the creative environment around the company.
+        </p>
+      </div>
+      <a href="/studio" class="btn btn--outline">Discover the Studio</a>
     </div>
   </div>
 
@@ -49,7 +56,7 @@ const word = 'Granada · Spain · ';
     progress
     tilt
   />
-  <a href="/#contact" class="btn btn--outline btn-mobile">Discover the Studio</a>
+  <a href="/studio" class="btn btn--outline btn-mobile">Discover the Studio</a>
 </section>
 
 <style>
@@ -80,6 +87,11 @@ const word = 'Granada · Spain · ';
   .title, .body { display: flex; flex-direction: column; gap: 24px; }
   .body { gap: 28px; padding-bottom: 8px; }
   .btn-mobile { display: none; }
+  .text { display: flex; flex-direction: column; gap: 1em; max-width: 560px; }
+  .tagline {
+    font: 600 clamp(24px, 2.2vw, 32px)/1.15 var(--font-display); text-transform: uppercase; letter-spacing: 0.01em;
+    color: var(--cream);
+  }
 
   @media (max-width: 1080px) {
     .head { grid-template-columns: 1fr; gap: 22px; }
