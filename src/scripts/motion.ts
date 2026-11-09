@@ -1,10 +1,9 @@
-// Home motion (GSAP + ScrollTrigger): header state, scroll-scrubbed floaters/parallax, reveals,
-// hero video, sideways strips, media lightbox, mobile menu.
+// Site motion (GSAP + ScrollTrigger): header state, scroll-scrubbed floaters/parallax, reveals,
+// hero video, sideways strips, media lightbox, mobile menu, mouse effects, page curtain.
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Flip } from 'gsap/Flip';
 
-gsap.registerPlugin(ScrollTrigger, Flip);
+gsap.registerPlugin(ScrollTrigger);
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $$ = <T extends HTMLElement = HTMLElement>(sel: string, root: ParentNode = document) =>
@@ -224,99 +223,7 @@ if (!reduceMotion) {
       scrollTrigger: { trigger: el, start: 'top bottom', end: 'bottom top', scrub: true, invalidateOnRefresh: true },
     });
   });
-
-  // stacking cards: each card sinks back as the next one slides over it
-  const stackCards = $$('[data-stack-card]');
-  stackCards.forEach((card, i) => {
-    const next = stackCards[i + 1];
-    const inner = card.firstElementChild;
-    if (!next || !inner) return;
-    gsap.to(inner, {
-      scale: 0.92,
-      opacity: 0.45,
-      ease: 'none',
-      scrollTrigger: { trigger: next, start: 'top 85%', end: 'top 25%', scrub: true },
-    });
-  });
-
-  // horizontal timeline: pinned and scrubbed sideways on wide screens, native swipe on small ones
-  $$('[data-hscroll]').forEach((section) => {
-    const viewport = section.querySelector<HTMLElement>('[data-hscroll-viewport]');
-    const track = section.querySelector<HTMLElement>('[data-hscroll-track]');
-    const bar = section.querySelector<HTMLElement>('[data-hscroll-progress]');
-    if (!viewport || !track) return;
-    const mm = gsap.matchMedia();
-    mm.add('(min-width: 900px)', () => {
-      const distance = () => Math.max(0, track.scrollWidth - viewport.clientWidth);
-      const tween = gsap.to(track, {
-        x: () => -distance(),
-        ease: 'none',
-        scrollTrigger: {
-          trigger: section,
-          start: () => (section.offsetHeight > window.innerHeight ? 'bottom bottom' : 'top top'),
-          end: () => `+=${distance()}`,
-          pin: true,
-          scrub: 1,
-          invalidateOnRefresh: true,
-          onUpdate: (self) => { if (bar) bar.style.transform = `scaleX(${self.progress.toFixed(4)})`; },
-        },
-      });
-      $$('[data-hscroll-img]', section).forEach((img) => {
-        gsap.fromTo(img, { xPercent: -6 }, {
-          xPercent: 6,
-          ease: 'none',
-          scrollTrigger: { trigger: img.parentElement, containerAnimation: tween, start: 'left right', end: 'right left', scrub: true },
-        });
-      });
-    });
-  });
 }
-
-/* ---------- media gallery filter (Flip) ---------- */
-$$('[data-filter-gallery]').forEach((gallery) => {
-  const chips = $$<HTMLButtonElement>('[data-filter]', gallery);
-  const tiles = $$('[data-category]', gallery);
-  chips.forEach((chip) => {
-    chip.addEventListener('click', () => {
-      const key = chip.dataset.filter ?? 'all';
-      chips.forEach((c) => {
-        const on = c === chip;
-        c.classList.toggle('is-active', on);
-        c.setAttribute('aria-pressed', String(on));
-      });
-      const state = reduceMotion ? null : Flip.getState(tiles);
-      tiles.forEach((t) => { t.hidden = key !== 'all' && t.dataset.category !== key; });
-      if (state) {
-        Flip.from(state, {
-          duration: 0.7,
-          ease: 'power3.inOut',
-          absolute: true,
-          stagger: 0.02,
-          onEnter: (els) => gsap.fromTo(els, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.5 }),
-          onLeave: (els) => gsap.to(els, { opacity: 0, scale: 0.85, duration: 0.4 }),
-          onComplete: () => ScrollTrigger.refresh(),
-        });
-      } else {
-        ScrollTrigger.refresh();
-      }
-    });
-  });
-});
-
-/* ---------- click-to-play videos ---------- */
-const players = $$('[data-player]');
-players.forEach((player) => {
-  const video = player.querySelector('video');
-  const btn = player.querySelector<HTMLButtonElement>('[data-player-btn]');
-  if (!video || !btn) return;
-  btn.addEventListener('click', () => {
-    players.forEach((p) => { if (p !== player) p.querySelector('video')?.pause(); });
-    video.controls = true;
-    player.classList.add('is-playing');
-    player.removeAttribute('data-cursor');
-    video.play().catch(() => {});
-  });
-});
 
 /* ---------- sideways strips: auto-drift (ping-pong), drag, swipe ---------- */
 class Strip {
@@ -406,7 +313,9 @@ class Strip {
   }
 
   isAuto() {
-    return !reduceMotion && this.visible && !this.hovering && !this.touching && !this.dragging && performance.now() > this.resumeAt;
+    // an opened card (About project rows) holds the strip still while it is read
+    return !reduceMotion && this.visible && !this.hovering && !this.touching && !this.dragging
+      && performance.now() > this.resumeAt && !this.el.querySelector('.is-open');
   }
 
   tick(dt: number) {
@@ -603,35 +512,6 @@ if (finePointer && !reduceMotion) {
         l.x(0);
         l.y(0);
       });
-    });
-  });
-
-  // hover list: a photo preview follows the mouse and tilts with its movement
-  $$('[data-hover-reveal]').forEach((zone) => {
-    const preview = zone.querySelector<HTMLElement>('[data-hover-preview]');
-    if (!preview) return;
-    const imgs = $$('[data-hover-img]', preview);
-    const px = gsap.quickTo(preview, 'x', { duration: 0.5, ease: 'power3.out' });
-    const py = gsap.quickTo(preview, 'y', { duration: 0.5, ease: 'power3.out' });
-    const pr = gsap.quickTo(preview, 'rotation', { duration: 0.6, ease: 'power3.out' });
-    let lastX = 0;
-    $$('[data-hover-index]', zone).forEach((row) => {
-      row.addEventListener('pointerenter', (e) => {
-        const i = +(row.dataset.hoverIndex ?? 0);
-        imgs.forEach((img, j) => img.classList.toggle('is-active', i === j));
-        gsap.set(preview, { x: e.clientX, y: e.clientY });
-        gsap.to(preview, { opacity: 1, scale: 1, duration: 0.4, ease: 'power3.out' });
-      });
-      row.addEventListener('pointermove', (e) => {
-        px(e.clientX);
-        py(e.clientY);
-        pr(gsap.utils.clamp(-12, 12, (e.clientX - lastX) * 0.6));
-        lastX = e.clientX;
-      });
-    });
-    zone.querySelector('ul')?.addEventListener('pointerleave', () => {
-      gsap.to(preview, { opacity: 0, scale: 0.8, duration: 0.35 });
-      pr(0);
     });
   });
 }

@@ -17,20 +17,21 @@ const { id, eyebrow, lines, lead, items, tone = 'ember' } = Astro.props;
 const pad = (n: number) => String(n).padStart(2, '0');
 ---
 
-<section class:list={['projects', `projects--${tone}`]} aria-labelledby={`${id}-title`} data-hscroll>
+<section class:list={['projects', `projects--${tone}`]} aria-labelledby={`${id}-title`}>
   <div class="head">
     <div data-reveal><p class="eyebrow">{eyebrow}</p></div>
     <SplitHeading id={`${id}-title`} class="h2" lines={lines} />
     <div data-reveal><p class="lead">{lead}</p></div>
   </div>
 
-  <div class="viewport" data-hscroll-viewport>
-    <ol class="track" data-hscroll-track>
+  <!-- drifts on its own (ping-pong), drag / swipe / arrow keys to browse; the page never pins -->
+  <div class="viewport" data-strip data-duration={items.length * 9} data-cursor="Drag" role="region" aria-label={`${lines.join(' ')} — drag or swipe to browse`} tabindex="0">
+    <ol class="track">
       {items.map((p, i) => (
         <li class="item">
           <article class="card" data-project-card>
             <div class="photo">
-              <Image src={p.image} alt={p.alt} widths={[360, 560, 840]} sizes="(max-width: 760px) 78vw, 400px" style={p.focus ? { objectPosition: p.focus } : undefined} data-hscroll-img />
+              <Image src={p.image} alt={p.alt} widths={[360, 560, 840]} sizes="(max-width: 760px) 78vw, 400px" style={p.focus ? { objectPosition: p.focus } : undefined} draggable="false" />
             </div>
             <div class="shade" aria-hidden="true"></div>
             <div class="face">
@@ -52,7 +53,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
       ))}
     </ol>
   </div>
-  <div class="progress" aria-hidden="true"><span data-hscroll-progress></span></div>
+  <div class="progress" aria-hidden="true"><span data-strip-progress></span></div>
 </section>
 
 <script>
@@ -87,7 +88,14 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .head { padding: 0 var(--gutter); display: flex; flex-direction: column; gap: 24px; max-width: 900px; margin-bottom: 56px; }
   .lead { max-width: 520px; }
 
-  .viewport { overflow: hidden; }
+  .viewport {
+    overflow-x: auto; overflow-y: hidden; scrollbar-width: none;
+    cursor: grab; -webkit-overflow-scrolling: touch;
+  }
+  .viewport::-webkit-scrollbar { display: none; }
+  .viewport.is-dragging { cursor: grabbing; user-select: none; }
+  .viewport.is-dragging .card { pointer-events: none; }
+  .viewport:focus-visible { outline-offset: -2px; }
   .track {
     display: flex; gap: clamp(20px, 2.6vw, 40px); align-items: flex-start;
     width: max-content; margin: 0; list-style: none;
@@ -103,8 +111,8 @@ const pad = (n: number) => String(n).padStart(2, '0');
   }
   .photo { position: absolute; inset: 0; }
   .photo img {
-    width: 100%; height: 100%; object-fit: cover; transform: scale(1.12); will-change: transform;
-    transition: filter 0.5s ease;
+    width: 100%; height: 100%; object-fit: cover; pointer-events: none;
+    transition: filter 0.5s ease, transform 0.8s var(--ease-out);
   }
   .shade {
     position: absolute; inset: 0;
@@ -165,19 +173,18 @@ const pad = (n: number) => String(n).padStart(2, '0');
     background: linear-gradient(90deg, var(--orange), var(--amber));
   }
 
-  /* phones / tablets: native swipe instead of the pinned scroll */
+  @media (hover: hover) and (pointer: fine) {
+    .card:hover .photo img { transform: scale(1.05); }
+  }
+
   @media (max-width: 899px) {
-    .viewport { overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 24px; scrollbar-width: none; }
-    .viewport::-webkit-scrollbar { display: none; }
-    .item { scroll-snap-align: start; width: 78vw; }
+    .item { width: 78vw; }
     .item:nth-child(even) { margin-top: 30px; }
     .track { padding-inline: 24px; }
-    .progress { display: none; }
+    .progress { margin: 24px 24px 0; }
     .d-text { font-size: 0.9rem; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .card, .face, .details, .toggle { transition: none; }
-    /* no pinned scroll: let people swipe / scroll the row instead */
-    .viewport { overflow-x: auto; }
+    .card, .face, .details, .toggle, .photo img { transition: none; }
   }
 </style>
