@@ -1,0 +1,76 @@
+---
+import SplitHeading from '../home/SplitHeading.astro';
+import { pages } from '../../data/site';
+---
+
+<section class="life" aria-labelledby="life-title">
+  <div class="glow glow--life" data-parallax="-80"><span></span></div>
+  <div class="life-inner">
+    <div data-reveal><p class="eyebrow">02 — Life at the studio</p></div>
+    <SplitHeading id="life-title" class="statement" lines={['We believe circus', 'grows through the', 'people who share it.']} />
+    <div class="cols lead" data-reveal>
+      <p>
+        Our aim is to create a welcoming environment where artists from different backgrounds can train, exchange
+        knowledge, explore new ideas and grow together.
+      </p>
+      <p>We want our studio to be a place where creativity and community naturally come together.</p>
+    </div>
+  </div>
+</section>
+
+<section class="community" aria-labelledby="community-title">
+  <div class="stripes" aria-hidden="true"></div>
+  <div class="head">
+    <div data-reveal><p class="eyebrow">03 — Community &amp; collaborations</p></div>
+    <SplitHeading id="community-title" class="h2" lines={['Community &', 'collaborations']} />
+  </div>
+  <div class="body lead" data-reveal>
+    <p>
+      Our studio is primarily our home for training and creation, but we are always happy to welcome artists who want to
+      share their experience with us.
+    </p>
+    <p>
+      Whether you are passing through Granada, interested in joining a training session, organising a workshop or
+      sharing your knowledge with our local community, we would love to hear from you.
+    </p>
+    <p>
+      We are also open to discussing artistic residencies, creative projects and occasional special events. Over the
+      years, we have organised our own circus gatherings and performances, bringing artists and audiences together in our
+      space.
+    </p>
+    <a href={pages.contact} class="line-link">Have an idea? Get in touch with us.</a>
+  </div>
+</section>
+
+<style>
+  .life {
+    position: relative; overflow: hidden;
+    padding: var(--section-y) var(--gutter);
+    background: linear-gradient(180deg, var(--ink) 0%, var(--ember-3) 55%, var(--ember-2) 100%);
+  }
+  .glow--life { right: -160px; top: 10%; width: 700px; height: 700px; }
+  .glow--life span { background: radial-gradient(circle, rgb(var(--orange-rgb) / 0.3), transparent 65%); }
+  .life-inner { position: relative; display: flex; flex-direction: column; gap: 36px; max-width: 1200px; }
+  .life :global(.statement) { font-size: clamp(2.8rem, 6.4vw, 6.2rem); line-height: 0.95; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 5vw, 80px); max-width: 980px; }
+
+  .community {
+    position: relative; overflow: hidden;
+    display: grid; grid-template-columns: 5fr 7fr; gap: clamp(40px, 6vw, 96px); align-items: start;
+    padding: var(--section-y) var(--gutter);
+    background: radial-gradient(45% 55% at 15% 30%, rgb(var(--amber-rgb) / 0.12), transparent 70%), linear-gradient(180deg, var(--ember-2), var(--ink));
+  }
+  .stripes {
+    position: absolute; top: 0; bottom: 0; right: 0; width: 96px; opacity: 0.08;
+    background: repeating-linear-gradient(90deg, var(--cream) 0 8px, transparent 8px 16px);
+    animation: aa-stripe 20s linear infinite;
+  }
+  .head { position: relative; display: flex; flex-direction: column; gap: 24px; }
+  .head :global(.h2) { font-size: clamp(2.6rem, 4.6vw, 4.4rem); }
+  .body { position: relative; display: flex; flex-direction: column; gap: 1em; max-width: 620px; }
+  .body .line-link { margin-top: 1em; color: var(--cream); width: auto; max-width: 100%; line-height: 1.5; }
+
+  @media (max-width: 960px) {
+    .cols, .community { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>

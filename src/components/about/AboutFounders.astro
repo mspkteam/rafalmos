@@ -1,54 +1,130 @@
 ---
-import FounderCard from '../home/FounderCard.astro';
+import { Image } from 'astro:assets';
 import SplitHeading from '../home/SplitHeading.astro';
 import Spotlight from '../home/Spotlight.astro';
-import rafa from '../../assets/home/founder-rafa.png';
-import paco from '../../assets/home/founder-paco.png';
+import { founders } from '../../data/about';
 ---
 
 <section class="founders" aria-labelledby="about-founders-title">
   <div class="glow glow--f" data-parallax="-100" style="--breathe: 11s"><span></span></div>
-  <Spotlight size={760} strength={0.18} />
+  <Spotlight size={760} strength={0.16} />
 
-  <div class="grid">
-    <div class="copy">
-      <div data-reveal><p class="eyebrow">04 — People</p></div>
-      <SplitHeading id="about-founders-title" class="h2" lines={['Meet the', 'founders']} />
-      <div data-reveal>
-        <p class="lead">
-          Arte Algo is led by brothers Rafa and Paco Olmos, and grows through every artist and team we create with.
-        </p>
-      </div>
-    </div>
-    <div class="cards" data-reveal>
-      <FounderCard name="Rafa Olmos" role="Co-Founder, Acrobat, Creator" photo={rafa} />
-      <FounderCard name="Paco Olmos" role="Co-Founder, Acrobat, Creator" photo={paco} offset />
-    </div>
+  <div class="head">
+    <div data-reveal><p class="eyebrow">04 — Founders</p></div>
+    <SplitHeading id="about-founders-title" class="h2" lines={['The people behind', 'Arte Algo']} />
   </div>
+
+  <div class="people">
+    {founders.map((f) => (
+      <article class="person" data-reveal>
+        <div class="portrait" data-tilt data-tilt-max="5">
+          <Image src={f.photo} alt={`Portrait of ${f.name}`} widths={[220, 440]} sizes="220px" />
+        </div>
+        <div class="bio">
+          <h3>{f.name}</h3>
+          <p class="role">{f.role}</p>
+          <div class="text">
+            {f.bio.map((p) => <p>{p}</p>)}
+          </div>
+          <button type="button" class="line-link cv-link" data-cv-open={f.id} aria-haspopup="dialog">View selected CV</button>
+        </div>
+      </article>
+    ))}
+  </div>
+
+  <!-- outside the revealed blocks so GSAP's hidden state can't hide an open dialog -->
+  {founders.map((f) => (
+    <dialog class="cv" data-cv={f.id} aria-labelledby={`cv-${f.id}-title`}>
+      <form method="dialog"><button class="close" aria-label="Close">×</button></form>
+      <p class="eyebrow">Selected CV</p>
+      <h3 id={`cv-${f.id}-title`}>{f.name}</h3>
+      <div class="groups">
+        {f.cv.map((g) => (
+          <div class="group">
+            <h4>{g.label}</h4>
+            <ul>{g.items.map((it) => <li>{it}</li>)}</ul>
+          </div>
+        ))}
+      </div>
+    </dialog>
+  ))}
 </section>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-cv-open]').forEach((btn) => {
+    const dialog = document.querySelector<HTMLDialogElement>(`[data-cv="${btn.dataset.cvOpen}"]`);
+    if (!dialog) return;
+    btn.addEventListener('click', () => dialog.showModal());
+    // click on the backdrop closes
+    dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
+  });
+</script>
 
 <style>
   .founders {
     position: relative;
-    padding: var(--section-y) var(--gutter) calc(var(--section-y) + 20px);
+    padding: var(--section-y) var(--gutter);
     background:
-      radial-gradient(55% 70% at 30% 45%, rgb(var(--orange-rgb) / 0.5), transparent 70%),
-      linear-gradient(180deg, var(--ember-3) 0%, var(--ember-4) 45%, var(--ember-3) 85%, var(--ink) 100%);
+      radial-gradient(55% 70% at 25% 40%, rgb(var(--orange-rgb) / 0.32), transparent 70%),
+      linear-gradient(180deg, var(--ink) 0%, var(--ember-3) 40%, var(--ember-3) 80%, var(--ink) 100%);
   }
   .glow--f { left: 10%; top: 80px; width: 760px; height: 760px; }
-  .glow--f span { background: radial-gradient(circle, rgb(var(--amber-rgb) / 0.28), transparent 62%); }
-  .grid { position: relative; display: grid; grid-template-columns: 4fr 8fr; gap: clamp(40px, 5.5vw, 80px); align-items: end; }
-  .copy { display: flex; flex-direction: column; gap: 24px; padding-bottom: 12px; }
-  .copy .eyebrow { color: var(--peach); }
-  .lead { max-width: 340px; color: var(--text-warm); }
-  .cards { display: flex; gap: 32px; justify-content: flex-end; }
+  .glow--f span { background: radial-gradient(circle, rgb(var(--amber-rgb) / 0.22), transparent 62%); }
+
+  .head { position: relative; display: flex; flex-direction: column; gap: 24px; margin-bottom: clamp(56px, 7vw, 96px); }
+  .head .eyebrow { color: var(--peach); }
+
+  .people {
+    position: relative; max-width: 1180px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: clamp(48px, 6vw, 96px);
+  }
+  .person { display: grid; grid-template-columns: 180px 1fr; gap: clamp(24px, 3vw, 40px); align-items: start; }
+  .person:nth-child(2) { margin-top: 80px; }
+
+  .portrait {
+    aspect-ratio: 3 / 4; overflow: hidden;
+    background:
+      radial-gradient(70% 60% at 50% 35%, rgb(var(--orange-rgb) / 0.35), transparent 70%),
+      linear-gradient(180deg, var(--ember-4), var(--ink));
+    box-shadow: var(--shadow-card);
+  }
+  .portrait img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; }
+
+  .bio { display: flex; flex-direction: column; gap: 10px; }
+  h3 { font-size: clamp(34px, 3.2vw, 48px); line-height: 0.95; text-transform: uppercase; }
+  .role { font: 600 11px/1.4 var(--font-body); letter-spacing: 0.18em; text-transform: uppercase; color: var(--amber); }
+  .text { margin-top: 14px; display: flex; flex-direction: column; gap: 0.9em; color: var(--text); line-height: 1.65; font-size: 0.98rem; }
+  .cv-link { margin-top: 18px; align-self: flex-start; padding: 0; border: 0; background: none; color: var(--cream); cursor: pointer; }
+  .cv-link:hover { color: var(--amber); }
+
+  .cv {
+    width: min(640px, calc(100vw - 32px)); max-height: 86vh;
+    padding: clamp(28px, 4vw, 48px); border: 0;
+    background: var(--ink-card); color: var(--cream);
+    box-shadow: var(--shadow-card);
+  }
+  .cv::backdrop { background: rgb(var(--ink-rgb) / 0.88); }
+  .cv h3 { margin: 10px 0 28px; }
+  .groups { display: grid; gap: 26px; }
+  h4 { font: 600 12px/1.4 var(--font-body); letter-spacing: 0.2em; text-transform: uppercase; color: var(--amber); margin-bottom: 10px; }
+  .group ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; }
+  .group li { position: relative; padding-left: 18px; line-height: 1.5; color: var(--text); }
+  .group li::before { content: ''; position: absolute; left: 0; top: 0.7em; width: 8px; height: 1px; background: var(--orange); }
+  .close {
+    position: absolute; top: 14px; right: 14px;
+    width: 44px; height: 44px; border-radius: 50%;
+    border: 1px solid var(--amber); background: transparent; color: var(--cream);
+    font: 400 26px/1 var(--font-body); cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  .close:hover { background: var(--orange); color: var(--ink); }
 
   @media (max-width: 1080px) {
-    .grid { grid-template-columns: 1fr; }
-    .cards { justify-content: flex-start; }
+    .people { grid-template-columns: 1fr; max-width: 720px; }
+    .person:nth-child(2) { margin-top: 0; }
   }
-  @media (max-width: 760px) {
-    .glow--f { width: 460px; height: 460px; left: -10%; }
-    .cards { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; }
+  @media (max-width: 560px) {
+    .person { grid-template-columns: 1fr; }
+    .portrait { width: 160px; }
   }
 </style>

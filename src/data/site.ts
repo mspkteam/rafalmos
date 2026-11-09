@@ -30,6 +30,8 @@ export const site = {
   location: 'Granada, Spain',
   // TODO(client): confirm the Instagram profile URL.
   instagram: 'https://www.instagram.com/',
+  // TODO(client): confirm the Studio's own Instagram profile URL (separate account per the Studio brief).
+  studioInstagram: 'https://www.instagram.com/',
 };
 
 /** Pre-filled email link for an enquiry type. */

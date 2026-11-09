@@ -1,20 +1,43 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/shared/PageHero.astro';
+import InstagramIcon from '../components/shared/InstagramIcon.astro';
 import Lightbox from '../components/shared/Lightbox.astro';
 import MediaGallery from '../components/media/MediaGallery.astro';
-import Videos from '../components/media/Videos.astro';
 import WorkTogether from '../components/home/WorkTogether.astro';
+import { site } from '../data/site';
 import viewpoint from '../assets/media/arte-algo-viewpoint.jpg';
 ---
 
 <BaseLayout
   title="Media — Arte Algo"
-  description="Photos and videos of Arte Algo on stage, on screen and behind the scenes — from Cirque du Soleil and Circus Knie to Friedrichstadt-Palast and Cirque Éloize."
+  description="Selected moments of Arte Algo on stage, on screen and behind the scenes — from Cirque du Soleil and Circus Knie to Friedrichstadt-Palast and Cirque Éloize."
 >
-  <PageHero eyebrow="Media · Selected moments" lines={['Moments that', 'stay with people']} image={viewpoint} imageAlt="Rafa and Paco Olmos on a teeterboard overlooking Granada" focus="50% 60%" compact />
+  <PageHero eyebrow="Media · Follow the journey" lines={['Follow the', 'journey']} image={viewpoint} imageAlt="Rafa and Paco Olmos on a teeterboard overlooking Granada" focus="50% 60%">
+    <p class="kicker">There is always something happening behind the scenes.</p>
+    <p>
+      New creations, rehearsals, performances, travels and everything that happens in between. Follow us on Instagram to
+      stay close to what Arte Algo is creating now.
+    </p>
+    <p>
+      <a href={site.instagram} class="ig" target="_blank" rel="noopener noreferrer">
+        <InstagramIcon /> Follow Arte Algo on Instagram <span aria-hidden="true">→</span>
+      </a>
+    </p>
+  </PageHero>
   <MediaGallery />
-  <Videos />
   <WorkTogether eyebrow="Press & bookings" />
   <Lightbox />
 </BaseLayout>
+
+<style>
+  .kicker { color: var(--cream); font-style: italic; }
+  .ig {
+    display: inline-flex; align-items: center; gap: 12px; margin-top: 0.6em;
+    font: 700 clamp(1.15rem, 1.8vw, 1.5rem)/1.1 var(--font-display); letter-spacing: 0.02em; text-transform: uppercase;
+    color: var(--cream); transition: color 0.3s ease;
+  }
+  .ig:hover { color: var(--amber); }
+  .ig span { transition: transform 0.4s var(--ease-out); }
+  .ig:hover span { transform: translateX(6px); }
+</style>

@@ -1,0 +1,84 @@
+---
+import ParallaxPhoto from '../home/ParallaxPhoto.astro';
+import SplitHeading from '../home/SplitHeading.astro';
+import InstagramIcon from '../shared/InstagramIcon.astro';
+import { pages, site } from '../../data/site';
+import tees from '../../assets/media/photoshoot-arte-algo-merchandise.jpg';
+import tanks from '../../assets/media/photoshoot-arte-algo-merchandise-2.jpg';
+---
+
+<section class="merch" aria-labelledby="merch-title">
+  <div class="photos">
+    <div class="ph ph--a" data-speed="-0.06">
+      <ParallaxPhoto image={tanks} alt="Two people wearing Arte Algo sleeveless shirts, seen from behind" sizes="(max-width: 960px) 70vw, 420px" />
+    </div>
+    <div class="ph ph--b" data-speed="0.08">
+      <ParallaxPhoto image={tees} alt="Two people wearing Arte Algo T-shirts on a street in Granada" sizes="(max-width: 960px) 60vw, 360px" />
+    </div>
+  </div>
+  <div class="copy">
+    <div data-reveal><p class="eyebrow">04 — Merchandise</p></div>
+    <SplitHeading id="merch-title" class="h2" lines={['Merchandise']} />
+    <div class="text lead" data-reveal>
+      <p class="q">Want to take a little piece of Arte Algo with you?</p>
+      <p>
+        Our T-shirts and sleeveless designs are available for anyone who would like to support our work and be part of
+        the Arte Algo community.
+      </p>
+      <a href={pages.contact} class="btn btn--outline">Contact us to get yours</a>
+    </div>
+  </div>
+</section>
+
+<section class="follow" aria-labelledby="follow-title">
+  <div class="inner" data-reveal>
+    <p class="eyebrow">05 — Follow the studio</p>
+    <h2 id="follow-title" class="visually-hidden">Follow the Studio</h2>
+    <p class="lead">
+      Want to see more of what happens in our space? Follow our studio on Instagram for training sessions, visiting
+      artists and everyday moments.
+    </p>
+    <a href={site.studioInstagram} class="ig" target="_blank" rel="noopener noreferrer">
+      <InstagramIcon /> Follow the Studio on Instagram <span aria-hidden="true">→</span>
+    </a>
+  </div>
+</section>
+
+<style>
+  .merch {
+    position: relative; overflow: hidden;
+    display: grid; grid-template-columns: 6fr 5fr; gap: clamp(40px, 6vw, 96px); align-items: center;
+    padding: var(--section-y) var(--gutter);
+    background: radial-gradient(50% 60% at 30% 50%, rgb(var(--orange-rgb) / 0.24), transparent 70%), var(--ink);
+  }
+  .photos { position: relative; min-height: clamp(420px, 44vw, 620px); }
+  .ph { position: absolute; }
+  .ph--a { left: 0; top: 0; width: 64%; }
+  .ph--b { right: 0; bottom: 0; width: 52%; box-shadow: var(--shadow-photo); }
+  .copy { display: flex; flex-direction: column; gap: 26px; }
+  .text { display: flex; flex-direction: column; gap: 1em; max-width: 480px; align-items: flex-start; }
+  .q { color: var(--cream); font-size: 1.15em; }
+  .text .btn { margin-top: 1em; }
+
+  .follow {
+    position: relative;
+    padding: clamp(100px, 10vw, 160px) var(--gutter);
+    text-align: center;
+    background: linear-gradient(180deg, var(--ink), var(--ink-deep));
+    border-top: 1px solid rgb(var(--cream-rgb) / 0.08);
+  }
+  .inner { display: flex; flex-direction: column; align-items: center; gap: 24px; max-width: 720px; margin: 0 auto; }
+  .ig {
+    display: inline-flex; align-items: center; gap: 12px;
+    font: 700 clamp(1.4rem, 2.6vw, 2.2rem)/1.1 var(--font-display); text-transform: uppercase; color: var(--cream);
+    transition: color 0.3s ease;
+  }
+  .ig:hover { color: var(--amber); }
+  .ig span { transition: transform 0.4s var(--ease-out); }
+  .ig:hover span { transform: translateX(6px); }
+
+  @media (max-width: 960px) {
+    .merch { grid-template-columns: 1fr; }
+    .photos { min-height: 0; aspect-ratio: 1 / 0.85; }
+  }
+</style>

@@ -1,19 +1,20 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import StudioHero from '../components/studio/StudioHero.astro';
-import Uses from '../components/studio/Uses.astro';
-import Gallery from '../components/studio/Gallery.astro';
-import FlashDay from '../components/studio/FlashDay.astro';
-import WorkTogether from '../components/home/WorkTogether.astro';
+import PageHero from '../components/shared/PageHero.astro';
+import TrainingSpace from '../components/studio/TrainingSpace.astro';
+import Community from '../components/studio/Community.astro';
+import Merchandise from '../components/studio/Merchandise.astro';
+import door from '../assets/studio/door.jpg';
 ---
 
 <BaseLayout
-  title="Our Studio — Arte Algo, Granada, Spain"
-  description="The Arte Algo studio in Granada, Spain: a space to train, create and connect, open to artists passing through Granada."
+  title="The Studio — Arte Algo, Granada, Spain"
+  description="The Arte Algo studio in Granada, Spain: a fully equipped space to train, create and connect, open to visiting artists, workshops, residencies and collaborations."
 >
-  <StudioHero />
-  <Uses />
-  <Gallery />
-  <FlashDay />
-  <WorkTogether eyebrow="Visit · Train · Create" />
+  <PageHero eyebrow="Our Studio · Granada, Spain" lines={['The Studio']} image={door} imageAlt="The entrance door of the Arte Algo studio in Granada" focus="50% 55%">
+    <p>A space to train, create and connect.</p>
+  </PageHero>
+  <TrainingSpace />
+  <Community />
+  <Merchandise />
 </BaseLayout>

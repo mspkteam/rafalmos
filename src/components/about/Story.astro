@@ -2,33 +2,31 @@
 import Floater from '../home/Floater.astro';
 import ParallaxPhoto from '../home/ParallaxPhoto.astro';
 import SplitHeading from '../home/SplitHeading.astro';
-import festival from '../../assets/about/latina-festival.jpg';
+import { intro } from '../../data/about';
+import knie from '../../assets/about/knie-zurich.jpg';
 import ari from '../../assets/about/float-ari.png';
+
+const [first, ...rest] = intro.body;
 ---
 
 <section class="story" aria-labelledby="story-title">
   <div class="glow glow--story" data-parallax="120"><span></span></div>
 
   <div class="copy">
-    <div data-reveal><p class="eyebrow">01 — Who we are</p></div>
-    <SplitHeading id="story-title" class="h2" lines={['Brothers,', 'acrobats,', 'creators']} />
+    <div data-reveal><p class="eyebrow">01 — Arte Algo</p></div>
+    <SplitHeading id="story-title" class="h2" lines={['An international', 'journey']} />
     <div class="text lead" data-reveal>
-      <p>Arte Algo is a contemporary circus company from Granada, Spain, founded by brothers Rafa and Paco Olmos.</p>
-      <p>
-        We are fascinated by what the human body can do, but even more by what it can communicate. A jump can be more
-        than a jump. A fall can carry fear, trust, failure or hope.
-      </p>
-      <p>
-        For us, acrobatics become meaningful when they stop being only a demonstration of skill and start telling
-        something human. We bring together circus, theatre, music and movement to create work that connects with people
-        and stays with them.
-      </p>
+      <p>{first}</p>
     </div>
   </div>
 
   <div class="figure">
     <div class="frame-line" data-parallax="-40" aria-hidden="true"></div>
-    <ParallaxPhoto image={festival} alt="Rafa and Paco Olmos on stage at the Festival del Circo di Latina" sizes="(max-width: 960px) calc(100vw - 48px), 520px" />
+    <ParallaxPhoto image={knie} alt="Rafa and Paco Olmos on stage with Circus Knie in Zurich" sizes="(max-width: 960px) calc(100vw - 48px), 520px" />
+  </div>
+
+  <div class="more lead" data-reveal>
+    {rest.map((p) => <p>{p}</p>)}
   </div>
 
   <Floater image={ari} width={300} x={-50} y={160} r={-18} class="f-ari" />
@@ -45,17 +43,25 @@ import ari from '../../assets/about/float-ari.png';
   .glow--story span { background: radial-gradient(circle, rgb(160 70 25 / 0.32), transparent 65%); }
 
   .copy { position: relative; display: flex; flex-direction: column; gap: 28px; }
-  .text { display: flex; flex-direction: column; gap: 1em; max-width: 560px; }
-  .text p:first-child { color: var(--cream); font-size: 1.12em; }
+  .text { max-width: 560px; }
 
   .figure { position: relative; }
   .frame-line { position: absolute; inset: 28px -28px -28px 28px; border: 1px solid rgb(var(--amber-rgb) / 0.35); }
+
+  .more {
+    grid-column: 1 / -1;
+    columns: 2; column-gap: clamp(40px, 6vw, 96px);
+    max-width: 1100px;
+  }
+  .more p { break-inside: avoid; margin-bottom: 1em; }
+  .more p:last-child { color: var(--cream); }
 
   .story :global(.f-ari) { right: 6%; bottom: -330px; width: 300px; }
 
   @media (max-width: 960px) {
     .story { grid-template-columns: 1fr; }
     .frame-line { inset: 14px -14px -14px 14px; }
+    .more { columns: 1; }
   }
   @media (max-width: 760px) {
     .story :global(.f-ari) { right: -20px; bottom: -200px; width: 170px; }

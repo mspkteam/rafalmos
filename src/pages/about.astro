@@ -3,29 +3,40 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/shared/PageHero.astro';
 import Floater from '../components/home/Floater.astro';
 import Story from '../components/about/Story.astro';
-import Timeline from '../components/about/Timeline.astro';
-import WhatWeDo from '../components/about/WhatWeDo.astro';
+import ProjectCards from '../components/about/ProjectCards.astro';
 import AboutFounders from '../components/about/AboutFounders.astro';
-import Collaborations from '../components/about/Collaborations.astro';
-import WorkTogether from '../components/home/WorkTogether.astro';
+import NextChapter from '../components/about/NextChapter.astro';
+import { intro, creations, collaborations } from '../data/about';
 import stage from '../assets/about/hero-stage.jpg';
 import versuth from '../assets/about/float-versuth.png';
 ---
 
 <BaseLayout
   title="About Us — Arte Algo"
-  description="Arte Algo is a contemporary circus company from Granada, Spain, founded by brothers Rafa and Paco Olmos. Our story, our path and the companies we have created with."
+  description="Arte Algo is a contemporary circus company based in Granada, Spain, founded by brothers Rafa and Paco Olmos. Our creations, the productions that shaped us and the next chapter."
 >
-  <PageHero eyebrow="About us · Granada, Spain" lines={['A jump can be', 'more than a jump']} image={stage} focus="50% 40%">
-    <p>A fall can carry fear, trust, failure or hope. We bring together circus, theatre, music and movement to tell something human.</p>
+  <PageHero eyebrow="About us · Granada, Spain" lines={['Arte Algo']} image={stage} imageAlt="Rafa and Paco Olmos facing each other on stage" focus="50% 40%">
+    <p>{intro.lead}</p>
     <Floater slot="extra" image={versuth} width={380} x={-80} y={-200} r={12} class="hero-float" />
   </PageHero>
   <Story />
-  <Timeline />
-  <WhatWeDo />
+  <ProjectCards
+    id="creations"
+    eyebrow="02 — Our creations"
+    lines={['Our', 'creations']}
+    lead="Five productions created, developed or led by Arte Algo."
+    items={creations}
+  />
+  <ProjectCards
+    id="collabs"
+    eyebrow="03 — Selected collaborations"
+    lines={['Selected', 'collaborations']}
+    lead="Experience as artists inside other major productions."
+    items={collaborations}
+    tone="deep"
+  />
   <AboutFounders />
-  <Collaborations />
-  <WorkTogether eyebrow="Contact" />
+  <NextChapter />
 </BaseLayout>
 
 <style>

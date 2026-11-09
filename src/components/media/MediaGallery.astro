@@ -1,15 +1,7 @@
 ---
 import { Image, getImage } from 'astro:assets';
 import SplitHeading from '../home/SplitHeading.astro';
-import { mediaPhotos, type MediaCategory } from '../../data/media';
-
-const filters: { key: 'all' | MediaCategory; label: string }[] = [
-  { key: 'all', label: 'All' },
-  { key: 'stage', label: 'Stage' },
-  { key: 'tv', label: 'TV' },
-  { key: 'photoshoot', label: 'Photoshoots' },
-];
-const count = (key: string) => (key === 'all' ? mediaPhotos.length : mediaPhotos.filter((p) => p.category === key).length);
+import { mediaPhotos } from '../../data/media';
 
 const items = await Promise.all(
   mediaPhotos.map(async (p) => {
@@ -21,24 +13,15 @@ const items = await Promise.all(
 );
 ---
 
-<section class="gallery" aria-labelledby="gallery-title" data-filter-gallery>
+<section class="gallery" aria-labelledby="gallery-title">
   <div class="head">
-    <div>
-      <div data-reveal><p class="eyebrow">Photos</p></div>
-      <SplitHeading id="gallery-title" class="h2" lines={['On stage,', 'on screen']} />
-    </div>
-    <div class="filters" role="group" aria-label="Filter photos" data-reveal>
-      {filters.map((f, i) => (
-        <button type="button" class:list={['chip', { 'is-active': i === 0 }]} data-filter={f.key} aria-pressed={i === 0 ? 'true' : 'false'}>
-          {f.label} <span>{count(f.key)}</span>
-        </button>
-      ))}
-    </div>
+    <div data-reveal><p class="eyebrow">Photos · {items.length}</p></div>
+    <SplitHeading id="gallery-title" class="h2" lines={['Selected', 'moments']} />
   </div>
 
   <ul class="grid" data-batch>
     {items.map((p) => (
-      <li class:list={['tile', `tile--${p.shape}`]} data-category={p.category}>
+      <li class:list={['tile', `tile--${p.shape}`]}>
         <button type="button" class="open" data-lightbox-src={p.full} data-lightbox-caption={p.title || 'Arte Algo'} data-cursor="View">
           <Image src={p.image} alt={p.title ? `Arte Algo — ${p.title}` : 'Arte Algo'} widths={[360, 600, 900]} sizes="(max-width: 760px) 50vw, (max-width: 1200px) 33vw, 25vw" />
           {p.title && <span class="cap">{p.title}</span>}
@@ -50,30 +33,16 @@ const items = await Promise.all(
 
 <style>
   .gallery { position: relative; padding: 120px var(--gutter) var(--section-y); background: var(--ink); }
-  .head { display: flex; justify-content: space-between; align-items: flex-end; gap: 32px; flex-wrap: wrap; margin-bottom: 56px; }
-  .head > div:first-child { display: flex; flex-direction: column; gap: 24px; }
+  .head { display: flex; flex-direction: column; gap: 24px; margin-bottom: 56px; }
 
-  .filters { display: flex; flex-wrap: wrap; gap: 10px; }
-  .chip {
-    display: inline-flex; align-items: center; gap: 10px;
-    height: 44px; padding: 0 20px; border-radius: 999px;
-    border: 1px solid rgb(var(--cream-rgb) / 0.25); background: transparent; color: var(--cream);
-    font: 600 12px/1 var(--font-body); letter-spacing: 0.18em; text-transform: uppercase; cursor: pointer;
-    transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
-  }
-  .chip span { color: var(--amber); font-size: 11px; }
-  .chip:hover { border-color: var(--amber); }
-  .chip.is-active { background: var(--orange); border-color: var(--orange); color: var(--ink); }
-  .chip.is-active span { color: var(--ink); }
-
+  /* one continuous mosaic: photos sit close together, mixed shapes packed densely */
   .grid {
-    display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: clamp(160px, 17vw, 250px); grid-auto-flow: dense;
-    gap: clamp(10px, 1.4vw, 20px); margin: 0; padding: 0; list-style: none;
+    display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: clamp(150px, 16vw, 240px); grid-auto-flow: dense;
+    gap: 4px; margin: 0; padding: 0; list-style: none;
   }
   .tile { position: relative; overflow: hidden; }
   .tile--tall { grid-row: span 2; }
   .tile--wide { grid-column: span 2; }
-  .tile[hidden] { display: none; }
   .open { display: block; width: 100%; height: 100%; padding: 0; border: 0; background: #000; cursor: pointer; position: relative; }
   .open img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.88); transition: transform 0.8s var(--ease-out), filter 0.4s ease; }
   .open:hover img, .open:focus-visible img { transform: scale(1.05); filter: brightness(1.05); }

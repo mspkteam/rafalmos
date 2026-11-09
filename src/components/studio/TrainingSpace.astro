@@ -1,0 +1,66 @@
+---
+import Strip, { type StripItem } from '../home/Strip.astro';
+import SplitHeading from '../home/SplitHeading.astro';
+import Spotlight from '../home/Spotlight.astro';
+import studio1 from '../../assets/home/studio/studio-1.jpg';
+import studio2 from '../../assets/home/studio/studio-2.jpg';
+import studio3 from '../../assets/home/studio/studio-3.jpg';
+import studio4 from '../../assets/home/studio/studio-4.jpg';
+import studio5 from '../../assets/home/studio/studio-5.jpg';
+
+// Same Studio photos as the Home page (client brief), drifting sideways on their own.
+const items: StripItem[] = [
+  { image: studio1, alt: 'Arte Algo studio in Granada, Spain — view 1', w: 300, h: 440, mt: 50 },
+  { image: studio2, alt: 'Arte Algo studio in Granada, Spain — view 2', w: 270, h: 400, mt: 0 },
+  { image: studio3, alt: 'Arte Algo studio in Granada, Spain — view 3', w: 320, h: 470, mt: 70 },
+  { image: studio4, alt: 'Arte Algo studio in Granada, Spain — view 4', w: 260, h: 380, mt: 20 },
+  { image: studio5, alt: 'Arte Algo studio in Granada, Spain — view 5', w: 300, h: 430, mt: 40 },
+];
+---
+
+<section class="training" aria-labelledby="training-title" data-studio>
+  <Spotlight size={820} strength={0.2} />
+  <div class="bgword" aria-hidden="true"><span data-bgword>{'Train · Create · Connect · '.repeat(3)}</span></div>
+
+  <div class="copy">
+    <div data-reveal><p class="eyebrow">01 — Granada, Spain</p></div>
+    <SplitHeading id="training-title" class="h2" lines={['Our training', 'space']} />
+    <div class="text lead" data-reveal>
+      <p>Located in Granada, Spain, our studio is a fully equipped space where we train, experiment and develop new ideas.</p>
+      <p>
+        The facilities include teeterboard, trampoline, floor and group acrobatics, three aerial rigging points, safety
+        lines and a dedicated workout area. We also have an open space for other disciplines such as Cyr wheel, as well
+        as a chill area to relax and spend time together.
+      </p>
+      <p>A place where we can keep exploring our disciplines, developing future creations and sharing our passion for circus.</p>
+    </div>
+  </div>
+
+  <div class="gallery">
+    <Strip items={items} label="Studio photos — drag or swipe to browse" duration={34} mobileScale={0.6} framed numbered progress tilt />
+  </div>
+</section>
+
+<style>
+  .training {
+    position: relative; overflow: hidden;
+    display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(32px, 4vw, 64px); align-items: center;
+    padding: var(--section-y) 0 var(--section-y) var(--gutter);
+    background: radial-gradient(50% 60% at 75% 50%, rgb(var(--orange-rgb) / 0.22), transparent 70%), var(--ink);
+  }
+  .bgword { position: absolute; left: 0; right: 0; bottom: 30px; overflow: hidden; pointer-events: none; user-select: none; }
+  .bgword span {
+    display: inline-block; white-space: nowrap;
+    font: 700 clamp(100px, 14vw, 220px)/0.9 var(--font-display); text-transform: uppercase;
+    color: transparent; -webkit-text-stroke: 1px rgb(var(--amber-rgb) / 0.1);
+  }
+  .copy { position: relative; display: flex; flex-direction: column; gap: 26px; }
+  .text { display: flex; flex-direction: column; gap: 1em; max-width: 520px; }
+  .text p:first-child { color: var(--cream); font-size: 1.1em; }
+  .gallery { position: relative; min-width: 0; }
+
+  @media (max-width: 960px) {
+    .training { grid-template-columns: 1fr; padding-right: var(--gutter); }
+    .gallery { margin-inline: calc(var(--gutter) * -1); }
+  }
+</style>
